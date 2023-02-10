@@ -138,6 +138,11 @@ STATIC_URL = '/static/'
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
+        "APP": {
+            "client_id": "611846558825-ca1nb0gdj0l5ausqh6roh2t03a6vbu86.apps.googleusercontent.com",
+            "secret": "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",
+            "key": ""
+        },
         'SCOPE': [
             'profile',
             'email',
@@ -148,3 +153,10 @@ SOCIALACCOUNT_PROVIDERS = {
         'OAUTH_PKCE_ENABLED': True,
     }
 }
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
+ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/email/' # default to /accounts/profile
