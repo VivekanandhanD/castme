@@ -1,46 +1,70 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+{% load account socialaccount %}
 <div class="container">
-<section id="signup-body" class="mx-auto my-5" style="max-width: 23rem;">
-    <form class="pb-5 px-2" _lpchecked="1" method="post">
-        <div class="card card-form mt-2 mb-4">
-            <div class="card-body rounded-top pink darken-4 mb-3">
-                <h3 class="font-weight-bold text-center text-uppercase text-white my-4">Sign in</h3>
-                {% csrf_token %}
-                <div class="d-flex justify-content-start align-items-center mb-4">
-                    <i class="far fa-user fa-lg text-white fa-fw me-3"></i>
-                    <div class="form-outline form-white w-100">
-                        {{ form.username }}
-                      <label class="form-label" for="{{ form.username.id_for_label }}">Email Id</label>
-                        {% if form.username.errors %}
-                        <div class="form-helper text-black">{{ form.username.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="d-flex justify-content-start align-items-center mb-4">
-                    <i class="fas fa-key fa-lg text-white me-3"></i>
-                    <div class="form-outline form-white w-100">
-                        {{ form.password }}
-                      <label class="form-label" for="{{ form.password.id_for_label }}">Password</label>
-                        {% if form.password.errors %}
-                        <div class="form-helper text-black">{{ form.password.errors.0 }}</div>
-                        {% endif %}
-                    </div>
-                </div>
-                {% for msg in messages %}
-                    <div class="form-helper text-white">{{ msg }}</div>
-                {% endfor %}
-            </div>
-            <div class="card card-form-2 mb-0 z-depth-0">
-                <div class="card-body">
-                    <button class="btn btn-outline-danger btn-rounded btn-block my-4 z-depth-0"
-                      type="submit">Log in</button>
-                    <p>New users <em><a href="/signup"> Sign up </a></em> here.</p>
-                </div>
-            </div>
+    <section id="signup-body" class="mx-auto my-5" style="max-width: 23rem;">
+        {% get_providers as socialaccount_providers %}
+
+        {% if socialaccount_providers %}
+        <p>Please sign in with one
+        of your existing third party accounts.<br>Or, <a href="{{ signup_url }}">sign up</a>
+        for a {{ site_name }} account and sign in below:</p>
+
+        <div class="socialaccount_ballot">
+
+        <div class="socialaccount_providers">
+            {% include "./provider_list.html" with process="login" %}
         </div>
-    </form>
+
+        <div class="login-or border-top border-bottom my-3">OR</div>
+
+        </div>
+
+        {% include "socialaccount/snippets/login_extra.html" %}
+
+        {% else %}
+        <p>If you have not created an account yet, then please
+        <a href="{{ signup_url }}">sign up</a> first.</p>
+        {% endif %}
+        <!-- <form class="pb-5 px-2" _lpchecked="1" method="post">
+            <div class="card card-form mt-2 mb-4">
+                <div class="card-body rounded-top pink darken-4 mb-3">
+                    <h3 class="font-weight-bold text-center text-uppercase text-white my-4">Sign in</h3>
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-start align-items-center mb-4">
+                        <i class="far fa-user fa-lg text-white fa-fw me-3"></i>
+                        <div class="form-outline form-white w-100">
+                            {{ form.emailid }}
+                        <label class="form-label" for="{{ form.emailid.id_for_label }}">Email Id</label>
+                            {% if form.username.errors %}
+                            <div class="form-helper text-black">{{ form.username.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mb-4">
+                        <i class="fas fa-key fa-lg text-white me-3"></i>
+                        <div class="form-outline form-white w-100">
+                            {{ form.password }}
+                        <label class="form-label" for="{{ form.password.id_for_label }}">Password</label>
+                            {% if form.password.errors %}
+                            <div class="form-helper text-black">{{ form.password.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% for msg in messages %}
+                        <div class="form-helper text-white">{{ msg }}</div>
+                    {% endfor %}
+                </div>
+                <div class="card card-form-2 mb-0 z-depth-0">
+                    <div class="card-body">
+                        <button class="btn btn-outline-danger btn-rounded btn-block my-4 z-depth-0"
+                        type="submit">Log in</button>
+                        <p>New users <em><a href="/accounts/signup"> Sign up </a></em> here.</p>
+                    </div>
+                </div>
+            </div>
+        </form> -->
   </section>
 </div>
 {% endblock %}
