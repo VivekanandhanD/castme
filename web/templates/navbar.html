@@ -82,7 +82,7 @@
                 {% if user.id == 1 %}
                     <!-- <li><a class="dropdown-item" href="/sunday">Admin Page</a></li> -->
                 {% endif %}
-                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
             </ul>
         </div>
         <!-- Right elements -->
