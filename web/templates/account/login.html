@@ -1,7 +1,9 @@
 {% extends "account/base.html" %}
 {% load static %}
 {% block content %}
+{% load account %}
 {% load account socialaccount %}
+{% load crispy_forms_tags %}
 <div class="container">
     <section id="signup-body" class="mx-auto my-5" style="max-width: 23rem;">
         {% get_providers as socialaccount_providers %}
@@ -27,7 +29,22 @@
         <p>If you have not created an account yet, then please
         <a href="{{ signup_url }}">sign up</a> first.</p>
         {% endif %}
-        <!-- <form class="pb-5 px-2" _lpchecked="1" method="post">
+        <!-- <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <form class="login" method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    {{ form |crispy }}
+                    {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+                    <div class="d-grid">
+                    <button class="primaryAction mt-3 btn btn-dark" type="submit">Sign In</button><br>
+                    <a class="button secondaryAction text-dark text-center" href="{% url 'account_reset_password' %}">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+        </div> -->
+        <form class="pb-5 px-2" _lpchecked="1" method="post">
             <div class="card card-form mt-2 mb-4">
                 <div class="card-body rounded-top pink darken-4 mb-3">
                     <h3 class="font-weight-bold text-center text-uppercase text-white my-4">Sign in</h3>
@@ -35,10 +52,10 @@
                     <div class="d-flex justify-content-start align-items-center mb-4">
                         <i class="far fa-user fa-lg text-white fa-fw me-3"></i>
                         <div class="form-outline form-white w-100">
-                            {{ form.emailid }}
+                            {{ form.login }}
                         <label class="form-label" for="{{ form.emailid.id_for_label }}">Email Id</label>
-                            {% if form.username.errors %}
-                            <div class="form-helper text-black">{{ form.username.errors.0 }}</div>
+                            {% if form.login.errors %}
+                            <div class="form-helper text-black">{{ form.login.errors.0 }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -58,13 +75,13 @@
                 </div>
                 <div class="card card-form-2 mb-0 z-depth-0">
                     <div class="card-body">
-                        <button class="btn btn-outline-danger btn-rounded btn-block my-4 z-depth-0"
-                        type="submit">Log in</button>
+                        {{ form.remember_me }}
+                        <button class="btn btn-outline-danger btn-rounded btn-block my-4 z-depth-0" type="submit">Log in</button>
                         <p>New users <em><a href="/accounts/signup"> Sign up </a></em> here.</p>
                     </div>
                 </div>
             </div>
-        </form> -->
+        </form>
   </section>
 </div>
 {% endblock %}

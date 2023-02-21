@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.instagram',
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -161,10 +163,19 @@ SOCIALACCOUNT_PROVIDERS = {
 LOGIN_URL = '/accounts/login'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
-ACCOUNT_LOGOUT_REDIRECT_URL ='/accounts/login'
+ACCOUNT_LOGOUT_REDIRECT_URL = LOGIN_URL
 ACCOUNT_LOGOUT_ON_GET = True
 LOGIN_REDIRECT_URL = '/' # default to /accounts/profile
-# LOGOUT_REDIRECT_URL = LOGIN_URL
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_SESSION_REMEMBER = True
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
