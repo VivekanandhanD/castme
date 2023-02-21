@@ -6,7 +6,7 @@
 {% load crispy_forms_tags %}
 <div class="container">
     <section id="signup-body" class="mx-auto my-5" style="max-width: 23rem;">
-        {% get_providers as socialaccount_providers %}
+        <!-- {% get_providers as socialaccount_providers %}
 
         {% if socialaccount_providers %}
         <p>Please sign in with one
@@ -28,7 +28,7 @@
         {% else %}
         <p>If you have not created an account yet, then please
         <a href="{{ signup_url }}">sign up</a> first.</p>
-        {% endif %}
+        {% endif %} -->
         <!-- <div class="row">
             <div class="col-md-6 offset-md-3">
                 <form class="login" method="POST" action="{% url 'account_login' %}">
@@ -81,6 +81,8 @@
                     </div>
                 </div>
             </div>
+            {% get_providers as socialaccount_providers %}
+            {% include "./provider_list.html" with process="login" %}
         </form>
   </section>
 </div>
