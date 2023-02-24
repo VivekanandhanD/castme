@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "header.html" %}
+<body>
+	<div class="modal" id="loader" tabindex="-1"  data-backdrop="static" data-keyboard="false" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-conten" style="background-color:transparent; position:fixed; top: 50%; left:50%;">
+				<div class="spinner-grow" role="status" style="color:#880e4f;">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% include "navbar.html" %}
+	<div style="margin-top: 60px;margin-bottom: 60px;">
+		{% block content %} {% endblock %}
+	</div>
+</body>
+{% include "footer.html" %}
+</html>
