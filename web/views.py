@@ -10,7 +10,7 @@ def index(request):
     print(es_client.info())
     resp = es_client.get(index="customer", id=1)
     print(resp['_source'])
-    s3_client.download_file('cast.me', 'signature.png', 'signature.png')
+    # s3_client.download_file('cast.me', 'signature.png', 'signature.png')
     return render(request, 'index.html', {'data':resp})
 
 
