@@ -7,22 +7,25 @@
         <div class="col col-lg-9 col-xl-9">
             <div class="card">
             <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px; background-image: url('{% static 'images/cover.jpg' %}');">
-                <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-                    <div class="d-flex justify-content-end" style="position: absolute;top: 74px;left: 184px;">
-                        <button type="button" class="btn btn-floating text-primary"  data-mdb-ripple-color="dark">
-                            <i class="fas fa-pencil-alt fa-2x"></i>
-                        </button>
-                    </div>
+                <div class="d-flex justify-content-end" style="position: absolute;top: 8px;right: 8px;">
+                    <button id="edit-cp" type="button" class="btn btn-floating text-white"  data-mdb-ripple-color="dark">
+                        <i class="fas fa-pencil-alt fa-2x"></i>
+                    </button>
+                </div>
+                <div class="ms-4 mt-5 d-flex flex-column card" style="width: 150px; height: 150px;">
                     <!-- <img src="https://pbs.twimg.com/profile_banners/1156338067/1655884717/1500x500"
                         alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                         style="width:150px; z-index: 1" /> -->
                     <img src="https://www.filmibeat.com/img/popcorn/profile_photos/vijay-20220622092431-662.jpg"
-                        alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
-                        style="height:150px; z-index: 1; object-fit: cover;" />
-                    <!-- <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
-                        style="z-index: 1;">
-                        Edit profile
-                    </button> -->
+                        alt="Generic placeholder image" class="img-fluid img-thumbnail"
+                        style="height:150px; object-fit: cover;" />
+                    <!-- <div class="card-img-overlay d-flex align-items-end" style="">
+                        <h6 class="card-title bg-dark mt-1">Edit Picture</h6>
+                    </div> -->
+                    <button id="edit-dp" type="button" class="btn bg-light" data-mdb-ripple-color="dark"
+                        style="z-index: 1;top: -36px;position: relative;overflow: visible;opacity: 60%;">
+                        Edit picture
+                    </button>
                 </div>
                 <div class="ms-3" style="margin-top: 130px;">
                     <h5>Vijay</h5>
