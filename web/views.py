@@ -21,7 +21,13 @@ def search(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    context = {}
+    user_id = str(request.user.id)
+    key = 'users/' + user_id + '/dp/dp.jpg'
+    context['dp_url'] = get_signed_url(key)
+    key = 'users/' + user_id + '/dp/cp.jpg'
+    context['cp_url'] = get_signed_url(key)
+    return render(request, 'profile.html', context=context)
 
 
 @login_required
