@@ -96,7 +96,7 @@ function initCrop(event, imageType) {
     if(imageType == 'dp'){
       aspectRatio = 1;
     } else{
-      aspectRatio = 3;
+      aspectRatio = 4;
     }
     console.log(aspectRatio);
     console.log(imageType);
