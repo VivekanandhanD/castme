@@ -1,6 +1,7 @@
 {% extends "account/base.html" %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/jquery.Jcrop.css' %}" />
 <section class="h-100 my-5">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -22,10 +23,14 @@
                     <!-- <div class="card-img-overlay d-flex align-items-end" style="">
                         <h6 class="card-title bg-dark mt-1">Edit Picture</h6>
                     </div> -->
-                    <button id="edit-dp" type="button" class="btn bg-light" data-mdb-ripple-color="dark"
-                        style="z-index: 1;top: -36px;position: relative;overflow: visible;opacity: 60%;">
-                        Edit picture
-                    </button>
+                    <!-- <button id="edit-dp" type="button" class="btn bg-light" data-mdb-ripple-color="dark" 
+                        style="z-index: 1;top: -36px;position: relative;overflow: visible;opacity: 60%;height: 36px;padding: 5px;">
+                    </button> -->
+                    <label class="form-label ms-1 bg-light" for="dp-input" 
+                        style="z-index: 1;top: -36px;position: relative;overflow: visible;opacity: 60%;height: 36px;padding: 5px;text-align: center;cursor: pointer;">
+                        Choose file
+                    </label>
+                    <input type="file" class="form-control d-none" id="dp-input" />
                 </div>
                 <div class="ms-3" style="margin-top: 130px;">
                     <h5>Joseph Vijay</h5>
@@ -86,4 +91,36 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="crop-picture" tabindex="-1" aria-labelledby="crop-picture-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crop-picture-label">Crop the picture</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <figure id="crop-figure">
+                <figcaption style="display: none;">
+                    Loading images from File objects requires support for the
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL">URL</a>
+                    or
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader"
+                      >FileReader</a
+                    >
+                    API.
+                  </figcaption>
+            </figure>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'js/load-image.all.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.Jcrop.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/profile.js' %}"></script>
+
 {% endblock %}
