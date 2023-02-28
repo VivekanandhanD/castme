@@ -9,15 +9,20 @@
             <div class="card">
             <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px; background-image: url('{{cp_url}}');">
                 <div class="d-flex justify-content-end" style="position: absolute;top: 8px;right: 8px;">
-                    <button id="edit-cp" type="button" class="btn btn-floating text-white"  data-mdb-ripple-color="dark">
+                    <!-- <button id="edit-cp" type="button" class="btn btn-floating text-white"  data-mdb-ripple-color="dark">
                         <i class="fas fa-pencil-alt fa-2x"></i>
-                    </button>
+                    </button> -->
+                    <label class="btn btn-floating text-white ms-1" for="cp-input" 
+                        style="z-index: 1;position: relative;overflow: visible;text-align: center;cursor: pointer;">
+                        <i class="fas fa-pencil-alt fa-2x"></i>
+                    </label>
+                    <input type="file" class="form-control d-none" id="cp-input" />
                 </div>
                 <div class="ms-4 mt-5 d-flex flex-column card" style="width: 150px; height: 150px;">
                     <!-- <img src="https://pbs.twimg.com/profile_banners/1156338067/1655884717/1500x500"
                         alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
                         style="width:150px; z-index: 1" /> -->
-                    <img src="{{ dp_url }}"
+                    <img id="dp-img" src="{{ dp_url }}"
                         alt="Generic placeholder image" class="img-fluid img-thumbnail"
                         style="height:150px; object-fit: cover;" />
                     <!-- <div class="card-img-overlay d-flex align-items-end" style="">
@@ -99,7 +104,7 @@
           <h5 class="modal-title" id="crop-picture-label">Crop the picture</h5>
           <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body d-flex justify-content-center align-items-center">
             <figure id="crop-figure">
                 <figcaption style="display: none;">
                     Loading images from File objects requires support for the
@@ -114,7 +119,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button id="save-crop" type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -122,5 +127,4 @@
 <script type="text/javascript" src="{% static 'js/load-image.all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.Jcrop.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/profile.js' %}"></script>
-
 {% endblock %}

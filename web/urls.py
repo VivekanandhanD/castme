@@ -9,4 +9,6 @@ urlpatterns = [
     path('search', views.search, name='search'),
     path('profile', views.profile, name='profile'),
     path('inbox', views.inbox, name='inbox'),
+
+    path('upload_image/', views.upload_image, name='upload_image'),
 ]

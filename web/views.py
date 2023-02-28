@@ -1,3 +1,6 @@
+import io
+from django.http import JsonResponse
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from allauth.account.views import LoginView
@@ -33,6 +36,24 @@ def profile(request):
 @login_required
 def inbox(request):
     return render(request, 'inbox.html')
+
+
+@login_required
+def upload_image(request):
+    if request.method == 'POST' and request.FILES['image']:
+        image = request.FILES['image']
+        mode = request.POST['mode']
+        # image_bytes = bytes(image, 'utf-8')
+        # image_file = InMemoryUploadedFile(io.BytesIO(image_bytes), None, 'image.jpg', 'image/jpeg', len(image_bytes), None)
+        user_id = str(request.user.id)
+        if mode == 'dp':
+            filename = 'users/' + user_id + '/dp/dp.jpg'
+        elif mode == 'cp':
+            filename = 'users/' + user_id + '/dp/cp.jpg'
+        s3_client.upload_fileobj(image, settings.AWS_STORAGE_BUCKET_NAME, filename)
+        image_url = get_signed_url(filename)
+        return JsonResponse({'image_url': image_url})
+    return JsonResponse({'error': 'Invalid request'})
 
 
 class CustomLoginView(LoginView):
