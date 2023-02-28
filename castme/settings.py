@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount.providers.linkedin',
     "crispy_forms",
     "crispy_bootstrap5",
+    "web"
 ]
 
 MIDDLEWARE = [
@@ -168,13 +169,15 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
 ACCOUNT_LOGOUT_REDIRECT_URL = LOGIN_URL
 ACCOUNT_LOGOUT_ON_GET = True
-LOGIN_REDIRECT_URL = '/' # default to /accounts/profile
+LOGIN_REDIRECT_URL = '/profile' # default to /accounts/profile
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_UNIQUE_EMAIL = True
+
+AUTH_USER_MODEL = 'web.CustomUser'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
