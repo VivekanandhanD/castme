@@ -63,10 +63,11 @@ function updateResults(img, data, keepMetaData) {
     // }
 }
 function displayImage(file) {
+  console.log(parseInt($("#crop-picture").children().css('width').replace('px','')));
     var options = {
-      maxWidth: resultNode.width(),
       canvas: true,
       pixelRatio: window.devicePixelRatio,
+      maxWidth: parseInt($("#crop-picture").children().css('width').replace('px','')),
     //   downsamplingRatio: 0.5,
     //   orientation: Number(orientationNode.val()) || true,
     //   imageSmoothingEnabled: imageSmoothingNode.is(':checked'),
@@ -95,11 +96,9 @@ function initCrop(event, imageType) {
     var aspectRatio;
     if(imageType == 'dp'){
       aspectRatio = 1;
-    } else{
+    } else if(imageType == 'cp'){
       aspectRatio = 4;
     }
-    console.log(aspectRatio);
-    console.log(imageType);
     imgNode
       // eslint-disable-next-line new-cap
       .Jcrop(
@@ -146,10 +145,12 @@ function cropModal(event, mode){
   if (!file) {
     return
   }
-  displayImage(file);
   setTimeout(function(){
-    initCrop(event, mode);
-    imageMode = mode;
+    displayImage(file);
+    setTimeout(function(){
+      initCrop(event, mode);
+      imageMode = mode;
+    },100);
   },500);
 }
 
