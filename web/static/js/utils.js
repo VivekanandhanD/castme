@@ -1,5 +1,9 @@
 $("#bottom-nav-icons a").css('color', '#999999');
-$("#bottom-nav-" + location.pathname.replace('/', '')).css('color', 'white');
+try {
+  $("#bottom-nav-" + location.pathname.replace('/', '')).css('color', 'white'); 
+} catch (error) {
+  
+}
 
 function getCookie(name) {
     let cookieValue = null;
