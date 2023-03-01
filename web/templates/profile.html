@@ -38,7 +38,12 @@
                     <input type="file" class="form-control d-none" id="dp-input" />
                 </div>
                 <div class="ms-3" style="margin-top: 130px;">
-                    <h5>Joseph Vijay</h5>
+                    <h5>
+                        <span class="displayname">{{ request.user.firstname|title }} {{ request.user.lastname|title }}</span>
+                        <button id="edit-profile" type="button" class="btn btn-floating text-white"  data-mdb-ripple-color="dark">
+                            <i class="fas fa-edit fa-2x"></i>
+                        </button>
+                    </h5>
                     <p>Chennai</p>
                 </div>
             </div>
@@ -47,6 +52,7 @@
                     <div>
                         <p class="mb-1 h5">253</p>
                         <p class="small text-muted mb-0">Posts</p>
+                        <!-- <div class="vr vr-blurry position-absolute my-0 h-100 d-none d-md-block top-0 end-0"></div> -->
                     </div>
                     <div class="px-3">
                         <p class="mb-1 h5">4.3M</p>
@@ -67,28 +73,30 @@
                 </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="lead fw-normal mb-0">Recent photos</p>
-                <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                <p class="lead fw-normal mb-0">Posts</p>
+                <!-- <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p> -->
                 </div>
-                <div class="row g-2">
-                <div class="col mb-2">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
-                    alt="image 1" class="w-100 rounded-3">
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
+                        alt="image 1" class="w-100 rounded-3">
+                    </div>
+                    <div class="col">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
+                        alt="image 1" class="w-100 rounded-3">
+                    </div>
+                    <div class="col">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
+                        alt="image 1" class="w-100 rounded-3">
+                    </div>
                 </div>
-                <div class="col mb-2">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
-                    alt="image 1" class="w-100 rounded-3">
-                </div>
-                </div>
-                <div class="row g-2">
-                <div class="col">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
-                    alt="image 1" class="w-100 rounded-3">
-                </div>
-                <div class="col">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
-                    alt="image 1" class="w-100 rounded-3">
-                </div>
+                <div class="row g-2 mb-2">
+                    <div class="col">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
+                        alt="image 1" class="w-100 rounded-3">
+                    </div>
+                    <div class="col"></div>
+                    <div class="col"></div>
                 </div>
             </div>
             </div>
@@ -96,34 +104,6 @@
         </div>
     </div>
 </section>
-
-<div class="modal fade" id="crop-picture" tabindex="-1" aria-labelledby="crop-picture-label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="crop-picture-label">Crop the picture</h5>
-          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body d-flex justify-content-center align-items-center">
-            <figure id="crop-figure">
-                <figcaption style="display: none;">
-                    Loading images from File objects requires support for the
-                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL">URL</a>
-                    or
-                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader"
-                      >FileReader</a
-                    >
-                    API.
-                  </figcaption>
-            </figure>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-          <button id="save-crop" type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-</div>
 <script type="text/javascript" src="{% static 'js/load-image.all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.Jcrop.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/profile.js' %}"></script>

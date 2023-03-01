@@ -84,7 +84,8 @@
                 {% if user.id == 1 %}
                     <!-- <li><a class="dropdown-item" href="/sunday">Admin Page</a></li> -->
                 {% endif %}
-                <li><a class="dropdown-item" href="/accounts/social/connections/">Settings</a></li>
+                <li><a class="dropdown-item" href="/settings/">Settings</a></li>
+                <li><a class="dropdown-item" href="/accounts/social/connections/">Connections</a></li>
                 <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
             </ul>
         </div>
@@ -93,4 +94,32 @@
     <!-- Container wrapper -->
 </nav>
 <!-- Navbar -->
+
+<div class="modal fade" id="crop-picture" tabindex="-1" aria-labelledby="crop-picture-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="crop-picture-label">Crop the picture</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center align-items-center">
+            <figure id="crop-figure">
+                <figcaption style="display: none;">
+                    Loading images from File objects requires support for the
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL">URL</a>
+                    or
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader"
+                      >FileReader</a
+                    >
+                    API.
+                  </figcaption>
+            </figure>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+          <button id="save-crop" type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}

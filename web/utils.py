@@ -20,3 +20,12 @@ def get_signed_url(object_key):
 
     return url
     
+
+def dp_url(request):
+    context = {}
+    user_id = str(request.user.id)
+    key = 'users/' + user_id + '/dp/dp.jpg'
+    context['dp_url'] = get_signed_url(key)
+    key = 'users/' + user_id + '/dp/cp.jpg'
+    context['cp_url'] = get_signed_url(key)
+    return context

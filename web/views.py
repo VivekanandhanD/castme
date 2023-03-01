@@ -56,6 +56,16 @@ def upload_image(request):
     return JsonResponse({'error': 'Invalid request'})
 
 
+@login_required
+def settings_page(request):
+    return render(request, 'settings.html')
+
+
+@login_required
+def profile_settings(request):
+    return render(request, 'profile-settings.html')
+
+
 class CustomLoginView(LoginView):
     form_class = CustomLoginForm
     template_name = 'account/login.html'
