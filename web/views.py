@@ -63,7 +63,11 @@ def settings_page(request):
 
 @login_required
 def profile_settings(request):
-    return render(request, 'profile-settings.html')
+    cxt = {}
+    cxt['skills'] = cine_skills
+    # cxt['tamil_nadu_cities'] = tamil_nadu_cities
+    cxt['cities'] = all_cities
+    return render(request, 'profile-settings.html', context=cxt)
 
 
 class CustomLoginView(LoginView):
