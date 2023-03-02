@@ -10,7 +10,7 @@ urlpatterns = [
     path('profile', views.profile, name='profile'),
     path('inbox', views.inbox, name='inbox'),
 
-    path('upload_image/', views.upload_image, name='upload_image'),
+    path('upload_image/', views.upload_image, name='upload-image'),
     path('settings/', views.settings_page, name='settings'),
-    path('profile-settings/', views.profile_settings, name='profile_settings'),
+    path('profile-settings/', views.profile_settings, name='profile-settings'),
 ]

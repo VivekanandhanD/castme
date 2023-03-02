@@ -40,9 +40,9 @@
                 <div class="ms-3" style="margin-top: 130px;">
                     <h5>
                         <span class="displayname">{{ request.user.firstname|title }} {{ request.user.lastname|title }}</span>
-                        <button id="edit-profile" type="button" class="btn btn-floating text-white"  data-mdb-ripple-color="dark">
+                        <a id="edit-profile" href="{% url 'profile-settings' %}" class="btn btn-floating text-white"  data-mdb-ripple-color="dark">
                             <i class="fas fa-edit fa-2x"></i>
-                        </button>
+                        </a>
                     </h5>
                     <p>Chennai</p>
                 </div>
