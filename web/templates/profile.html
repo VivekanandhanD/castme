@@ -39,7 +39,7 @@
                 </div>
                 <div class="ms-3" style="margin-top: 130px;">
                     <h5>
-                        <span class="displayname">{{ profileuser.firstname|title }} {{ profileuser.lastname|title }}</span>
+                        <span class="displayname">{{ profileuser.get_full_name|title }}</span>
                         <a id="edit-profile" href="{% url 'profile-settings' %}" class="btn btn-floating text-white edit-btn"  data-mdb-ripple-color="dark">
                             <i class="fas fa-edit fa-2x"></i>
                         </a>

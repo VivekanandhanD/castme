@@ -165,7 +165,6 @@ cropNode.on('click', function (event) {
         processData: false,
         success: function(response) {
           if (response.image_url) {
-            console.log(response.image_url);
             if (imageMode == 'dp') $("#dp-img").attr('src', response.image_url);
             else location.reload();
             $("#crop-picture").modal("hide");
@@ -183,4 +182,4 @@ cropNode.on('click', function (event) {
   }, 100);
 });
 
-if (editProfile) $('.edit-btn').show();
+try {if (editProfile) $('.edit-btn').show();} catch (error) {}

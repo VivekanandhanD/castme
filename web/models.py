@@ -14,6 +14,20 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def update_user(self, user, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        
+        first_name = extra_fields.pop('first_name', '')
+        last_name = extra_fields.pop('last_name', '')
+        
+        user.email = self.normalize_email(email)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
@@ -36,6 +50,12 @@ class CustomUser(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+    
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+    def get_short_name(self):
+        return self.first_name
     
 
 Users = get_user_model()

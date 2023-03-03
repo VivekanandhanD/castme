@@ -29,4 +29,42 @@ $(document).ready(function() {
     $('#skills-input').select2({
         maximumSelectionLength: 4
     });
+
+    $('#save-btn').on('click', function(){
+        var firstname = $('#firstname-input').val();
+        var lastname = $('#lastname-input').val();
+        var location = $('#location-input').select2('data')[0].text;
+        var skillsArr = $('#skills-input').select2('data');
+        var skills = [];
+        $.each(skillsArr, function(i, val){
+            skills.push(val.text);
+        });
+        console.log(skills);
+        $.ajax({
+            url: location.pathname,
+            method: 'POST',
+            data: JSON.stringify({firstname:firstname, lastname:lastname, location:location, skills:skills}),
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+    initInputs()
 });
+
+function initInputs(){
+    var locationVal = $('#location-input').find("option:contains('" + userLocation + "')").val();
+    $('#location-input').val(locationVal).trigger('change.select2');
+    var skillsArr = [];
+    $.each(userSkills, function (i, val) {
+        skillsArr.push($('#skills-input').find("option:contains('" + val + "')").val());
+    });
+    $('#skills-input').val(skillsArr).trigger('change.select2');
+}

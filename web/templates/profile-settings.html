@@ -25,11 +25,11 @@
                     <div class="card-body justify-content-center text-center py-0">
                         <div class="input-group input-group-lg mb-2 ">
                             <span class="col-3 input-group-text border-0" style="white-space: pre-wrap;">First Name</span>
-                            <input type="text" id="firstname-input" class="form-control col rounded" />
+                            <input type="text" id="firstname-input" class="form-control col rounded" value="{{ user.firstname }}"/>
                         </div>
                         <div class="input-group input-group-lg mb-2 ">
                             <span class="col-3 input-group-text border-0" style="white-space: pre-wrap;">Last Name</span>
-                            <input type="text" id="lastname-input" class="form-control col rounded" />
+                            <input type="text" id="lastname-input" class="form-control col rounded" value="{{ user.lastname }}" />
                         </div>
                     </div>
                     <hr class="hr hr-blurry" />
@@ -48,7 +48,7 @@
                     </div>
                     <hr class="hr hr-blurry" />
                     <div class="d-grid gap-2 col-6 mx-auto">
-                        <button type="button" class="btn btn-info btn-rounded">Save Changes</button>
+                        <button id="save-btn" type="button" class="btn btn-info btn-rounded">Save Changes</button>
                     </div>
                     <hr class="hr hr-blurry" />
                 </div>
@@ -59,6 +59,10 @@
 <script>
     const cineSkillsets = {{ skills|safe }}
     const cities = {{ cities|safe }}
+    var firstname = '{{ user.firstname }}'
+    var lastname = '{{ user.lastname }}'
+    var userLocation = '{{ location }}'
+    var userSkills = {{ userskills|safe }}
 </script>
 <script type="text/javascript" src="{% static 'js/load-image.all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.Jcrop.js' %}"></script>

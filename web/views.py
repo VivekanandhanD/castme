@@ -1,4 +1,5 @@
 import io
+import json
 from django.http import JsonResponse
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.shortcuts import render
@@ -71,6 +72,14 @@ def profile_settings(request):
     cxt['skills'] = cine_skills
     # cxt['tamil_nadu_cities'] = tamil_nadu_cities
     cxt['cities'] = all_cities
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user = Users.objects.get(pk=request.user.id)
+        user.firstname = data.get('firstname')
+        user.lastname = data.get('lastname')
+        user.save()
+    cxt['location'] = 'Madurai, Tamil Nadu'
+    cxt['userskills'] = ['Acting', 'Directing', 'Screenwriting']
     return render(request, 'profile-settings.html', context=cxt)
 
 
