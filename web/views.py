@@ -7,6 +7,7 @@ from allauth.account.views import LoginView
 from .forms import CustomLoginForm
 from .es import es_client
 from .utils import *
+from .models import *
 
 @login_required
 def index(request):
@@ -23,13 +24,18 @@ def search(request):
 
 
 @login_required
-def profile(request):
+def profile(request, userid):
     context = {}
-    user_id = str(request.user.id)
-    key = 'users/' + user_id + '/dp/dp.jpg'
+    current_userid = str(request.user.id)
+    key = 'users/' + userid + '/dp/dp.jpg'
     context['dp_url'] = get_signed_url(key)
-    key = 'users/' + user_id + '/dp/cp.jpg'
+    key = 'users/' + userid + '/dp/cp.jpg'
     context['cp_url'] = get_signed_url(key)
+    if userid == current_userid:
+        context['edit'] = 1
+    else:
+        context['edit'] = 0
+    context['profileuser'] = Users.objects.get(pk=userid)
     return render(request, 'profile.html', context=context)
 
 
@@ -43,8 +49,6 @@ def upload_image(request):
     if request.method == 'POST' and request.FILES['image']:
         image = request.FILES['image']
         mode = request.POST['mode']
-        # image_bytes = bytes(image, 'utf-8')
-        # image_file = InMemoryUploadedFile(io.BytesIO(image_bytes), None, 'image.jpg', 'image/jpeg', len(image_bytes), None)
         user_id = str(request.user.id)
         if mode == 'dp':
             filename = 'users/' + user_id + '/dp/dp.jpg'

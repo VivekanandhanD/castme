@@ -80,12 +80,11 @@
                 <i class="fas fa-user"></i>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileicon">
-                <!-- <li><a class="dropdown-item" href="/job-history">Job history</a></li> -->
                 {% if user.id == 1 %}
                     <!-- <li><a class="dropdown-item" href="/sunday">Admin Page</a></li> -->
                 {% endif %}
                 <li><a class="dropdown-item" href="/settings/">Settings</a></li>
-                <li><a class="dropdown-item" href="/accounts/social/connections/">Connections</a></li>
+                <!-- <li><a class="dropdown-item" href="/accounts/social/connections/">Connections</a></li> -->
                 <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
             </ul>
         </div>

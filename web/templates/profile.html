@@ -12,7 +12,7 @@
                     <!-- <button id="edit-cp" type="button" class="btn btn-floating text-white"  data-mdb-ripple-color="dark">
                         <i class="fas fa-pencil-alt fa-2x"></i>
                     </button> -->
-                    <label class="btn btn-floating text-white ms-1" for="cp-input" 
+                    <label class="btn btn-floating text-white ms-1 edit-btn" for="cp-input" 
                         style="z-index: 1;position: relative;overflow: visible;text-align: center;cursor: pointer;">
                         <i class="fas fa-pencil-alt fa-2x"></i>
                     </label>
@@ -31,7 +31,7 @@
                     <!-- <button id="edit-dp" type="button" class="btn bg-light" data-mdb-ripple-color="dark" 
                         style="z-index: 1;top: -36px;position: relative;overflow: visible;opacity: 60%;height: 36px;padding: 5px;">
                     </button> -->
-                    <label class="form-label ms-1 bg-light" for="dp-input" 
+                    <label class="form-label ms-1 bg-light edit-btn" for="dp-input" 
                         style="z-index: 1;top: -36px;position: relative;overflow: visible;opacity: 60%;height: 36px;padding: 5px;text-align: center;cursor: pointer;">
                         Choose file
                     </label>
@@ -39,8 +39,8 @@
                 </div>
                 <div class="ms-3" style="margin-top: 130px;">
                     <h5>
-                        <span class="displayname">{{ request.user.firstname|title }} {{ request.user.lastname|title }}</span>
-                        <a id="edit-profile" href="{% url 'profile-settings' %}" class="btn btn-floating text-white"  data-mdb-ripple-color="dark">
+                        <span class="displayname">{{ profileuser.firstname|title }} {{ profileuser.lastname|title }}</span>
+                        <a id="edit-profile" href="{% url 'profile-settings' %}" class="btn btn-floating text-white edit-btn"  data-mdb-ripple-color="dark">
                             <i class="fas fa-edit fa-2x"></i>
                         </a>
                     </h5>
@@ -104,6 +104,9 @@
         </div>
     </div>
 </section>
+<script>
+    const editProfile = {{edit|safe}};
+</script>
 <script type="text/javascript" src="{% static 'js/load-image.all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.Jcrop.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/profile.js' %}"></script>
