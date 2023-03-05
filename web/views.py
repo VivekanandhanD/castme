@@ -69,7 +69,7 @@ def settings_page(request):
 @login_required
 def profile_settings(request):
     cxt = {}
-    cxt['skills'] = cine_skills
+    cxt['skills'] = cine_skills + music_skills
     # cxt['tamil_nadu_cities'] = tamil_nadu_cities
     cxt['cities'] = all_cities
     if request.method == 'POST':

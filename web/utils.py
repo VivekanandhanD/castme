@@ -1,8 +1,10 @@
 import boto3
 from django.conf import settings
 
-cine_skills = ['Acting', 'Directing', 'Screenwriting', 'Producing', 'Cinematography', 'Editing', 'Sound design and mixing', 'Visual effects and animation', 'Set design and construction', 'Costume design', 'Makeup and hair styling', 'Music composition and production', 'Marketing and distribution', 'Studio operations and management']
-tamil_nadu_cities = ['Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli', 'Tiruppur', 'Salem', 'Erode', 'Vellore', 'Thoothukudi', 'Thanjavur', 'Dindigul', 'Ranipet', 'Karur', 'Nagercoil', 'Hosur', 'Pollachi', 'Udhagamandalam (Ooty)', 'Kanchipuram', 'Neyveli', 'Kumbakonam', 'Karaikkudi'];
+cine_skills = ['Acting', 'Directing', 'Screenwriting', 'Producing', 'Cinematography', 'Editing', 'Sound design and mixing', 'Visual effects and animation', 'Set design and construction', 'Costume design', 'Makeup and hair styling', 'Music composition and production', 'Marketing and distribution', 'Studio operations and management', 'Voice acting']
+tamil_nadu_cities = ['Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli', 'Tiruppur', 'Salem', 'Erode', 'Vellore', 'Thoothukudi', 'Thanjavur', 'Dindigul', 'Ranipet', 'Karur', 'Nagercoil', 'Hosur', 'Pollachi', 'Udhagamandalam (Ooty)', 'Kanchipuram', 'Neyveli', 'Kumbakonam', 'Karaikkudi']
+music_skills = ["Music production", "Audio engineering", "Songwriting", "Composition", "Arranging", "Music theory", "Vocal performance", "Instrumental performance", "Sound design", "Music education", "Music therapy", "Music business", "Event production", "Artist management", "Booking", "Promotion", "Marketing", "A&R", "Music journalism", "Radio broadcasting", "Music technology", "Live sound engineering", "Tour management", "Concert promotion", "Music video production", "Music photography"]
+
 
 
 s3_client = boto3.client(
