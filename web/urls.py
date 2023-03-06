@@ -7,7 +7,7 @@ urlpatterns = [
     # path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('', views.index, name='index'),
     path('search', views.search, name='search'),
-    # path('profile', views.profile, name='profile'),
+    path('profile', views.profile, name='profile'),
     path('profile/<str:userid>', views.profile, name='profile'),
     path('inbox', views.inbox, name='inbox'),
 

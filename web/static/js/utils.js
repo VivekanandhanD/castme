@@ -1,6 +1,6 @@
 $("#bottom-nav-icons a").css('color', '#999999');
 try {
-  $("#bottom-nav-" + location.pathname.replace('/', '')).css('color', 'white'); 
+  $("#bottom-nav-" + location.pathname.split('/')[1]).css('color', 'white'); 
 } catch (error) {
   
 }

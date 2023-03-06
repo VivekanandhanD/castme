@@ -47,11 +47,12 @@ $(document).ready(function() {
             headers: {
                 'X-CSRFToken': getCookie('csrftoken')
             },
-            success: function(response) {
-                console.log(response);
+            success: function(xhr, status, response) {
+                if(status == 'success') window.location.reload();
+                else alert(status)
             },
             error: function(xhr, status, error) {
-                console.log(error);
+                alert(error);
             }
         });
     });
