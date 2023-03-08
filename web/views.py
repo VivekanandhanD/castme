@@ -42,26 +42,23 @@ def search(request):
 @login_required
 @user_passes_test(onboarded, login_url='profile-settings')
 def profile(request, userid=None):
-    # try:
-    #     resp = es_client.get(index="user", id=request.user.id)
-    #     if not resp['_source']['onboarded']:
-    #         return redirect('web:profile-settings')
-    # except NotFoundError:
-    #     return redirect('web:profile-settings')
-    context = {}
+    cxt = {}
     if not userid:
         userid = str(request.user.id)
     current_userid = str(request.user.id)
     key = 'users/' + userid + '/dp/dp.jpg'
-    context['dp_url'] = get_signed_url(key)
+    cxt['dp_url'] = get_signed_url(key)
     key = 'users/' + userid + '/dp/cp.jpg'
-    context['cp_url'] = get_signed_url(key)
+    cxt['cp_url'] = get_signed_url(key)
     if userid == current_userid:
-        context['edit'] = 1
+        cxt['edit'] = 1
     else:
-        context['edit'] = 0
-    context['profileuser'] = Users.objects.get(pk=userid)
-    return render(request, 'profile.html', context=context)
+        cxt['edit'] = 0
+    cxt['profileuser'] = Users.objects.get(pk=userid)
+    resp = es_client.get(index="user", id=request.user.id)
+    cxt['location'] = resp['_source']['location']
+    cxt['userskills'] = resp['_source']['skills']
+    return render(request, 'profile.html', context=cxt)
 
 
 @login_required
