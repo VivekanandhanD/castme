@@ -35,8 +35,15 @@ def index(request):
 
 
 @login_required
+@user_passes_test(onboarded, login_url='profile-settings')
 def search(request):
     return render(request, 'search.html')
+
+
+@login_required
+@user_passes_test(onboarded, login_url='profile-settings')
+def newpost(request):
+    return render(request, 'post.html')
 
 
 @login_required
@@ -62,6 +69,7 @@ def profile(request, userid=None):
 
 
 @login_required
+@user_passes_test(onboarded, login_url='profile-settings')
 def inbox(request):
     return render(request, 'inbox.html')
 

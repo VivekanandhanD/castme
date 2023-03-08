@@ -70,14 +70,17 @@
 
             <!-- Avatar -->
             <a
-                    class="dropdown-toggle d-flex align-items-center hidden-arrow btn btn-outline-primary btn-floating"
+                    class="dropdown-toggle d-flex align-items-center hidden-arrow btn btn-floating"
                     href="#"
                     id="profileicon"
                     role="button"
                     data-mdb-toggle="dropdown"
                     aria-expanded="false"
             >
-                <i class="fas fa-user"></i>
+                <!-- <i class="fas fa-user"></i> -->
+                <img id="dp-img" src="{{ dp_url }}"
+                        alt="Generic placeholder image" class=""
+                        style="height: -webkit-fill-available;border-radius: 50%;" />
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileicon">
                 {% if user.id == 1 %}

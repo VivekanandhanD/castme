@@ -1,5 +1,17 @@
 {% extends "account/base.html" %}
 {% load static %}
 {% block content %}
-Hello {{ data }}
+<section class="h-100 my-5">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-9 col-xl-9">
+                <div class="card card-form-2 mb-0 z-depth-0">
+                    <div class="card-body">
+                        Hello {{ request.user.get_full_name|title }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

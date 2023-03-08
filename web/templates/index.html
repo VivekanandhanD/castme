@@ -1,6 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-Hello {{ request.user.username|title }}
-{{ data }}
+<section class="h-100 my-5">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-9 col-xl-9">
+                <div class="card w-100 my-3">
+                    <div class="card-body">
+                        Hello {{ request.user.get_full_name|title }}
+                        {{ data }}
+                    </div>
+                </div>
+                <div class="card w-100 my-3">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                      <a href="#" class="btn btn-primary">Button</a>
+                    </div>
+                </div>
+                <div class="card w-100 my-3">
+                    <div class="form-outline form-black">
+                        <textarea class="form-control" id="textAreaExample3" rows="4"></textarea>
+                        <label class="form-label" for="textAreaExample3">Message</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
