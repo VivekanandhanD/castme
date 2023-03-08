@@ -6,6 +6,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from django.utils import timezone
 from allauth.account.views import LoginView
 from elasticsearch import NotFoundError
 from .forms import CustomLoginForm
@@ -94,39 +95,29 @@ def upload_image(request):
 @user_passes_test(onboarded, login_url='profile-settings')
 def upload_post(request):
     if request.method == 'POST':
-        postid = uuid.uuid4()
+        postid = str(uuid.uuid4())
         user_id = str(request.user.id)
         content = {}
         image = request.FILES['image']
         if image:
-            filename = 'users/' + user_id + '/posts/' + postid + '.jpg'
+            filename = 'posts/' + user_id + '/' + postid + '.jpg'
             s3_client.upload_fileobj(image, settings.AWS_STORAGE_BUCKET_NAME, filename)
-            image_url = get_signed_url(filename)
+            # image_url = get_signed_url(filename)
         # content['content'] = request.POST['content']
         # content['img'] = image_url if image else ''
         content = {
             'doc': {
-                'posts': {
-                    'content': request.POST['content'],
-                    'img': image_url if image else ''
-                }
+                'userid': user_id,
+                'content': request.POST['content'],
+                'img': filename if image else '',
+                'time': str(timezone.now()),
+                'ad': request.POST.get('ad_bool', False),
+                'job': request.POST.get('job_bool', False),
+                'likes': 0,
+                'comments': []
             }
         }
-        update_query = {
-            "script": {
-                "source": "ctx._source.list_field += params.new_values",
-                "lang": "painless",
-                "params": {
-                    "new_values": ["new_value1", "new_value2"]
-                }
-            }
-        }
-        try:
-            es_client.update(index="posts", id=request.user.id, body=content)
-        except NotFoundError:
-            es_client.index(index="posts", id=request.user.id, body=content['doc'])
-        except Exception as e:
-            print(e)
+        es_client.index(index="posts", id=postid, body=content['doc'])
         return JsonResponse({'msg': 'success', 'id': postid})
     return JsonResponse({'error': 'Invalid request'})
 
