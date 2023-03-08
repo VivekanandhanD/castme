@@ -1,11 +1,10 @@
-from functools import wraps
-import io
 import json
 from django.http import JsonResponse
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from django.urls import reverse
 from django.utils import timezone
 from allauth.account.views import LoginView
 from elasticsearch import NotFoundError
@@ -50,9 +49,10 @@ def newpost(request):
 @login_required
 @user_passes_test(onboarded, login_url='profile-settings')
 def profile(request, userid=None):
-    cxt = {}
     if not userid:
         userid = str(request.user.id)
+        return redirect(reverse('profile') + '/' + userid)
+    cxt = {}
     current_userid = str(request.user.id)
     key = 'users/' + userid + '/dp/dp.jpg'
     cxt['dp_url'] = get_signed_url(key)
