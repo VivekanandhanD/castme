@@ -1,23 +1,44 @@
 {% extends "account/base.html" %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/jquery.Jcrop.css' %}" />
 <section class="h-100 my-5">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col col-lg-9 col-xl-9">
                 <div class="card card-form-2 mb-0 z-depth-0">
                     <div class="card-body">
-                        Hello {{ request.user.get_full_name|title }}
-                    </div>
-                </div>
-                <div class="card w-100 my-3">
-                    <div class="form-outline form-black">
-                        <textarea class="form-control" id="textAreaExample3" rows="4" maxlength="300"></textarea>
-                        <label class="form-label" for="textAreaExample3">Create a Post</label>
+                        <h5 class="card-title">Create a post</h5>
+                        <div class="form-outline form-black">
+                            <textarea class="form-control" id="post-content" rows="4" maxlength="300" style="resize: none;"></textarea>
+                            <label class="form-label" for="post-content">What do you want to talk about?</label>
+                        </div>
+                        <figure id="disp-figure">
+                            <figcaption style="display: none;">
+                                Loading images from File objects requires support for the
+                                <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL">URL</a>
+                                or
+                                <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader"
+                                  >FileReader</a
+                                >
+                                API.
+                              </figcaption>
+                        </figure>
+                        <label class="form-label bg-light" for="p-input" 
+                                style="cursor: pointer;">
+                                <i class="far fa-image fa-3x text-primary"></i>
+                        </label>
+                        <input type="file" class="form-control d-none" id="p-input" />
+                        <div class="text-end">
+                            <button class="btn btn-info" id="post-btn">Post</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<script type="text/javascript" src="{% static 'js/load-image.all.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.Jcrop.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/post.js' %}"></script>
 {% endblock %}

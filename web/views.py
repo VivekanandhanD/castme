@@ -27,7 +27,7 @@ def onboarded(user):
 @login_required
 @user_passes_test(onboarded, login_url='profile-settings')
 def index(request):
-    print(es_client.info())
+    # print(es_client.info())
     resp = es_client.get(index="user", id=request.user.id)
     print(resp['_source'])
     # s3_client.download_file('cast.me', 'signature.png', 'signature.png')

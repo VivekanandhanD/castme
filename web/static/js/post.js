@@ -1,7 +1,9 @@
-var inputImage = $('#dp-input');
+var inputImage = $('#p-input');
 var resultNode = $('#crop-figure');
+var dispNode = $('#disp-figure');
 var cropNode = $('#save-crop');
 var imageMode = 'dp';
+var currentNode = resultNode;
 $('.edit-btn').hide();
 const loadImageOptions = {
     maxWidth: 500,
@@ -40,24 +42,24 @@ function uploadImage(file, imageType) {
 function updateResults(img, data, keepMetaData) {
     var isCanvas = window.HTMLCanvasElement && img instanceof HTMLCanvasElement
     if (!(isCanvas || img.src)) {
-      resultNode
+      currentNode
         .children()
         .replaceWith($('<span>Loading image file failed</span>'))
       return
     }
     var content = $('<a></a>').append(img)
-    resultNode.children().replaceWith(content)
+    currentNode.children().replaceWith(content)
 }
-function displayImage(file) {
-  console.log(parseInt($("#crop-picture").children().css('width').replace('px','')));
+function displayImage(file, disp=false) {
     var options = {
       canvas: true,
       pixelRatio: window.devicePixelRatio,
       maxWidth: parseInt($("#crop-picture").children().css('width').replace('px','')),
       meta: true
     }
+    // var node = disp ? dispNode : resultNode;
     if (!loadImage(file, updateResults, options)) {
-      resultNode
+      currentNode
         .children()
         .replaceWith(
           $(
@@ -107,12 +109,8 @@ function initCrop(event, imageType) {
       });
 }
 
-$('#dp-input').on('change', function(event) {
+$('#p-input').on('change', function(event) {
     cropModal(event, 'dp');
-});
-
-$('#cp-input').on('change', function(event) {
-    cropModal(event, 'cp');
 });
 
 function cropModal(event, mode){
@@ -125,6 +123,7 @@ function cropModal(event, mode){
     return
   }
   setTimeout(function(){
+    currentNode = resultNode;
     displayImage(file);
     setTimeout(function(){
       initCrop(event, mode);
@@ -134,7 +133,11 @@ function cropModal(event, mode){
 }
 
 cropNode.on('click', function (event) {
-  event.preventDefault();
+  // event.preventDefault();
+  var file = inputImage.prop('files')[0];
+  currentNode = dispNode;
+  displayImage(file, true);
+  return;
   var img = resultNode.find('img, canvas')[0];
   var pixelRatio = window.devicePixelRatio || 1;
   var cropData;
@@ -165,7 +168,7 @@ cropNode.on('click', function (event) {
         processData: false,
         success: function(response) {
           if (response.image_url) {
-            if (imageMode == 'dp') $(".dp-img").attr('src', response.image_url);
+            if (imageMode == 'dp') $("#dp-img").attr('src', response.image_url);
             else location.reload();
             $("#crop-picture").modal("hide");
           } else if (response.error) {
