@@ -9,7 +9,7 @@
                 <div class="card card-form-2 mb-0 z-depth-0">
                     <div class="card-body">
                         <h5 class="card-title">Create a post</h5>
-                        <div class="form-outline form-black">
+                        <div class="form-outline form-black my-3">
                             <textarea class="form-control" id="post-content" rows="4" maxlength="300" style="resize: none;"></textarea>
                             <label class="form-label" for="post-content">What do you want to talk about?</label>
                         </div>
@@ -18,18 +18,16 @@
                                 Loading images from File objects requires support for the
                                 <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL">URL</a>
                                 or
-                                <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader"
-                                  >FileReader</a
-                                >
+                                <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader">FileReader</a>
                                 API.
-                              </figcaption>
+                            </figcaption>
                         </figure>
                         <label class="form-label bg-light" for="p-input" 
                                 style="cursor: pointer;">
                                 <i class="far fa-image fa-3x text-primary"></i>
                         </label>
                         <input type="file" class="form-control d-none" id="p-input" />
-                        <div class="text-end">
+                        <div class="text-end" style="bottom: 39px;position: absolute;right: 24px;">
                             <button class="btn btn-info" id="post-btn">Post</button>
                         </div>
                     </div>

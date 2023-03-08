@@ -91,6 +91,47 @@ def upload_image(request):
 
 
 @login_required
+@user_passes_test(onboarded, login_url='profile-settings')
+def upload_post(request):
+    if request.method == 'POST':
+        postid = uuid.uuid4()
+        user_id = str(request.user.id)
+        content = {}
+        image = request.FILES['image']
+        if image:
+            filename = 'users/' + user_id + '/posts/' + postid + '.jpg'
+            s3_client.upload_fileobj(image, settings.AWS_STORAGE_BUCKET_NAME, filename)
+            image_url = get_signed_url(filename)
+        # content['content'] = request.POST['content']
+        # content['img'] = image_url if image else ''
+        content = {
+            'doc': {
+                'posts': {
+                    'content': request.POST['content'],
+                    'img': image_url if image else ''
+                }
+            }
+        }
+        update_query = {
+            "script": {
+                "source": "ctx._source.list_field += params.new_values",
+                "lang": "painless",
+                "params": {
+                    "new_values": ["new_value1", "new_value2"]
+                }
+            }
+        }
+        try:
+            es_client.update(index="posts", id=request.user.id, body=content)
+        except NotFoundError:
+            es_client.index(index="posts", id=request.user.id, body=content['doc'])
+        except Exception as e:
+            print(e)
+        return JsonResponse({'msg': 'success', 'id': postid})
+    return JsonResponse({'error': 'Invalid request'})
+
+
+@login_required
 def settings_page(request):
     return render(request, 'settings.html')
 

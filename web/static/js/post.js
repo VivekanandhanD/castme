@@ -51,10 +51,14 @@ function updateResults(img, data, keepMetaData) {
     currentNode.children().replaceWith(content)
 }
 function displayImage(file, disp=false) {
+  console.log(currentNode.prop('id'));
+  var width = parseInt(currentNode.parent().children().css('width').replace('px',''));
+  width = width ? width : parseInt(currentNode.parent().css('width').replace('px',''))
+  console.log(width);
     var options = {
       canvas: true,
-      pixelRatio: window.devicePixelRatio,
-      maxWidth: parseInt($("#crop-picture").children().css('width').replace('px','')),
+      pixelRatio: 1,
+      maxWidth: width,
       meta: true
     }
     // var node = disp ? dispNode : resultNode;
@@ -72,11 +76,11 @@ function displayImage(file, disp=false) {
 }
 
 function initCrop(event, imageType) {
-    var imgNode = resultNode.find('img, canvas');
+    var imgNode = currentNode.find('img, canvas');
     var img = imgNode[0];
     var pixelRatio = window.devicePixelRatio || 1;
-    var margin = 0;
-    var aspectRatio;
+    var margin = 1;
+    var aspectRatio = 1;
     if(imageType == 'dp'){
       aspectRatio = 1;
     } else if(imageType == 'cp'){
@@ -88,8 +92,8 @@ function initCrop(event, imageType) {
           setSelect: [
             margin,
             margin,
-            img.width / pixelRatio - margin,
-            img.height / pixelRatio - margin
+            img.width,
+            img.height
           ],
           aspectRatio: aspectRatio,
           onSelect: function (coords) {
@@ -135,54 +139,51 @@ function cropModal(event, mode){
 cropNode.on('click', function (event) {
   // event.preventDefault();
   var file = inputImage.prop('files')[0];
-  currentNode = dispNode;
-  displayImage(file, true);
-  return;
   var img = resultNode.find('img, canvas')[0];
-  var pixelRatio = window.devicePixelRatio || 1;
+  var pixelRatio = 1;
   var cropData;
+  currentNode = dispNode;
   updateResults(
     loadImage.scale(img, {
       left: coordinates.x * pixelRatio,
       top: coordinates.y * pixelRatio,
-      sourceWidth: coordinates.w * pixelRatio,
-      sourceHeight: coordinates.h * pixelRatio,
-      maxWidth: resultNode.width() * pixelRatio,
+      // sourceWidth: coordinates.w * pixelRatio,
+      // sourceHeight: coordinates.h * pixelRatio,
+      maxWidth: currentNode.width() * pixelRatio,
       contain: true,
     })
   );
-  setTimeout(function(){
-    img = resultNode.find('img, canvas')[0];
-    img.toBlob(function(blob) {
-      cropData = blob;
-      const formData = new FormData();
-      formData.append('image', cropData, 'image.jpg');
-      const csrftoken = getCookie('csrftoken');
-      formData.append('csrfmiddlewaretoken', csrftoken);
-      formData.append('mode', imageMode);
-      $.ajax({
-        url: '/upload_image/',
-        method: 'POST',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-          if (response.image_url) {
-            if (imageMode == 'dp') $("#dp-img").attr('src', response.image_url);
-            else location.reload();
-            $("#crop-picture").modal("hide");
-          } else if (response.error) {
-            alert(response.error);
-          } else {
-            alert('Unknown error');
-          }
-        },
-        error: function(xhr, status, error) {
-          alert('Failed to upload the image');
-        }
-      });
-    }, 'image/png', 1);
-  }, 100);
+  return;
 });
 
-try {if (editProfile) $('.edit-btn').show();} catch (error) {}
+$('#post-btn').on('click', function(){
+  const formData = new FormData();
+  img = dispNode.find('img, canvas')[0];
+  if(img){
+    img.toBlob(function(blob) {
+      cropData = blob;
+      formData.append('image', cropData, 'image.jpg');
+    }, 'image/png', 1);
+  }
+  setTimeout(function(){
+    const csrftoken = getCookie('csrftoken');
+    formData.append('csrfmiddlewaretoken', csrftoken);
+    formData.append('content', $('#post-content').val());
+    $.ajax({
+      url: '/upload_post/',
+      method: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+        console.log(response);
+        if (response.error) {
+          alert(response.error);
+        }
+      },
+      error: function(xhr, status, error) {
+        alert('Failed to upload the image');
+      }
+    });
+  }, 1000);
+});
