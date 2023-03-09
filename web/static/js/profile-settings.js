@@ -39,7 +39,6 @@ $(document).ready(function() {
         $.each(skillsArr, function(i, val){
             skills.push(val.text);
         });
-        console.log(skills);
         $.ajax({
             url: location.pathname,
             method: 'POST',
@@ -48,7 +47,15 @@ $(document).ready(function() {
                 'X-CSRFToken': getCookie('csrftoken')
             },
             success: function(xhr, status, response) {
-                if(status == 'success') window.location.reload();
+                if(status == 'success') {
+                    let searchParams = new URLSearchParams(window.location.search);
+                    var next = searchParams.get('next');
+                    if (next){
+                        window.location.href = next;
+                    } else{
+                        window.location.reload();
+                    }
+                }
                 else alert(status)
             },
             error: function(xhr, status, error) {

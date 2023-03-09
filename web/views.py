@@ -66,6 +66,10 @@ def profile(request, userid=None):
     resp = es_client.get(index="user", id=request.user.id)
     cxt['location'] = resp['_source']['location']
     cxt['userskills'] = resp['_source']['skills']
+    q = ['follow-count', 'following-count']
+    resp = es_client.get(index="user-activity", id=request.user.id, _source_includes=q)
+    cxt['followcount'] = resp['_source']['follow-count']
+    cxt['followingcount'] = resp['_source']['following-count']
     return render(request, 'profile.html', context=cxt)
 
 
@@ -127,6 +131,18 @@ def settings_page(request):
     return render(request, 'settings.html')
 
 
+def create_account_details(userid):
+    data = {
+        "follow-count": 0,
+        "following-count": 0,
+        "followers": [],
+        "following": [],
+        "posts": [],
+        "blacklist": []
+    }
+    es_client.index(index="user-activity", id=userid, body=data)
+
+
 @login_required
 def profile_settings(request):
     cxt = {}
@@ -145,13 +161,15 @@ def profile_settings(request):
                 "lastname": data.get('lastname'),
                 "location": data.get('location'),
                 "skills": data.get('skills'),
-                "onboarded": True
+                "onboarded": True,
+                "businessaccount": data.get('business'),
             }
         }
         try:
             es_client.update(index="user", id=request.user.id, body=update_body)
         except NotFoundError:
             es_client.index(index="user", id=request.user.id, body=update_body['doc'])
+            create_account_details(request.user.id)
         except Exception as e:
             print(e)
     try:
