@@ -78,13 +78,12 @@
                     aria-expanded="false"
             >
                 {% if user.is_authenticated %}
-                  <img id="dp-img-icon" src="{{ dp_url }}"
-                          alt="Profile Picture" class="dp-img"
-                          style="height: inherit;border-radius: 50%;" />
+                  <img id="dp-img-icon" src="{{ dp_url }}" alt="Profile Picture" class="dp-img" style="height: inherit;border-radius: 50%;" />
                 {% else %}
                   <i class="fas fa-user"></i>
                 {% endif %}
             </a>
+            {% if user.is_authenticated %}
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileicon">
                 {% if user.id == 1 %}
                     <!-- <li><a class="dropdown-item" href="/sunday">Admin Page</a></li> -->
@@ -93,6 +92,7 @@
                 <!-- <li><a class="dropdown-item" href="/accounts/social/connections/">Connections</a></li> -->
                 <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
             </ul>
+            {% endif %}
         </div>
         <!-- Right elements -->
     </div>

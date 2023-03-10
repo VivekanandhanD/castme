@@ -43,7 +43,12 @@ def search(request):
 @login_required
 @user_passes_test(onboarded, login_url='profile-settings')
 def newpost(request):
-    return render(request, 'post.html')
+    return render(request, 'new-post.html')
+
+
+def post_view(request, postid):
+    cxt = get_post_details(postid)
+    return render(request, 'post.html', context=cxt)
 
 
 @login_required
