@@ -66,10 +66,11 @@ def profile(request, userid=None):
     resp = es_client.get(index="user", id=request.user.id)
     cxt['location'] = resp['_source']['location']
     cxt['userskills'] = resp['_source']['skills']
-    q = ['follow-count', 'following-count']
+    q = ['follow-count', 'following-count', 'post-count']
     resp = es_client.get(index="user-activity", id=request.user.id, _source_includes=q)
     cxt['followcount'] = resp['_source']['follow-count']
     cxt['followingcount'] = resp['_source']['following-count']
+    cxt['postcount'] = resp['_source']['post-count']
     return render(request, 'profile.html', context=cxt)
 
 
