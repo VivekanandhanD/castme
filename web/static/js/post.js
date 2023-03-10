@@ -187,3 +187,9 @@ $('#post-btn').on('click', function(){
     });
   }, 1000);
 });
+
+function getYTVideo(url){
+  var u = new URL(url);
+  var vId = new URLSearchParams(u.search).get('v');
+  console.log(vId);
+}

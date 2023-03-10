@@ -118,7 +118,7 @@ def upload_post(request):
                 'time': str(timezone.now()),
                 'ad': request.POST.get('ad_bool', False),
                 'job': request.POST.get('job_bool', False),
-                'likes': 0,
+                'likes': [],
                 'comments': []
             }
         }
@@ -163,7 +163,7 @@ def profile_settings(request):
                 "location": data.get('location'),
                 "skills": data.get('skills'),
                 "onboarded": True,
-                "businessaccount": data.get('business'),
+                "accounttype": data.get('accounttype'),
             }
         }
         try:
@@ -177,9 +177,13 @@ def profile_settings(request):
         resp = es_client.get(index="user", id=request.user.id)
         cxt['location'] = resp['_source']['location']
         cxt['userskills'] = resp['_source']['skills']
+        cxt['accounttype'] = resp['_source']['accounttype']
+        # cxt['userservices'] = resp['_source']['userservices']
     except Exception as e:
         cxt['location'] = ''
         cxt['userskills'] = []
+        cxt['accounttype'] = 'Individual'
+        # cxt['userservices'] = []
     return render(request, 'profile-settings.html', context=cxt)
 
 

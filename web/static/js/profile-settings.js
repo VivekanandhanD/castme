@@ -27,8 +27,19 @@ $(document).ready(function() {
         }));
     });
     $('#skills-input').select2({
-        maximumSelectionLength: 4
+        maximumSelectionLength: 10
     });
+
+    // $('#services-input').html('');
+    // $.each(cineServices, function(index, value) {
+    //     $('#services-input').append($('<option>', {
+    //       value: index,
+    //       text: value
+    //     }));
+    // });
+    // $('#services-input').select2({
+    //     maximumSelectionLength: 10
+    // });
 
     $('#save-btn').on('click', function(){
         var firstname = $('#firstname-input').val();
@@ -36,13 +47,14 @@ $(document).ready(function() {
         var location = $('#location-input').select2('data')[0].text;
         var skillsArr = $('#skills-input').select2('data');
         var skills = [];
+        var type = $('input[name="account-type"]:checked').attr('id');
         $.each(skillsArr, function(i, val){
             skills.push(val.text);
         });
         $.ajax({
             url: location.pathname,
             method: 'POST',
-            data: JSON.stringify({firstname:firstname, lastname:lastname, location:location, skills:skills}),
+            data: JSON.stringify({firstname:firstname, lastname:lastname, location:location, skills:skills, accounttype:type}),
             headers: {
                 'X-CSRFToken': getCookie('csrftoken')
             },
@@ -63,11 +75,21 @@ $(document).ready(function() {
             }
         });
     });
-
-    initInputs()
+    // $('input[name="account-type"]').on('change', function(i){
+    //     var type = i.target.id;
+    //     if(type == 'Business'){
+    //         $('#skills-div').addClass('d-none');
+    //         $('#services-div').removeClass('d-none');
+    //     } else {
+    //         $('#services-div').addClass('d-none');
+    //         $('#skills-div').removeClass('d-none');
+    //     }
+    // });
+    initInputs();
 });
 
 function initInputs(){
+    $('#' + accountType).click();
     var locationVal = $('#location-input').find("option:contains('" + userLocation + "')").val();
     $('#location-input').val(locationVal).trigger('change.select2');
     var skillsArr = [];
@@ -75,4 +97,9 @@ function initInputs(){
         skillsArr.push($('#skills-input').find("option:contains('" + val + "')").val());
     });
     $('#skills-input').val(skillsArr).trigger('change.select2');
+    // var servicesArr = [];
+    // $.each(userServices, function (i, val) {
+    //     servicesArr.push($('#services-input').find("option:contains('" + val + "')").val());
+    // });
+    // $('#services-input').val(servicesArr).trigger('change.select2');
 }

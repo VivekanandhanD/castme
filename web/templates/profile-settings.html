@@ -41,7 +41,21 @@
                                 <option></option>
                             </select>
                         </div>
-                        <div class="input-group input-group-lg mb-2 ">
+                        <div id="services-opt-div" class="input-group input-group-lg mb-2">
+                            <span class="col-3 input-group-text border-0" style="white-space: pre-wrap;">Account Type</span>
+                            <div class="btn-group">
+                                <input type="radio" class="btn-check" name="account-type" id="Individual" autocomplete="off" checked />
+                                <label class="btn btn-secondary" for="Individual">Individual</label>
+
+                                <input type="radio" class="btn-check" name="account-type" id="Business" autocomplete="off" />
+                                <label class="btn btn-secondary" for="Business">Business</label>
+                            </div>
+                        </div>
+                        <div id="services-div" class="input-group input-group-lg mb-2 d-none">
+                            <span class="col-3 input-group-text border-0" style="white-space: pre-wrap;">Services Provided</span>
+                            <select id="services-input" class="form-control col" multiple="multiple"></select>
+                        </div>
+                        <div id="skills-div" class="input-group input-group-lg mb-2 ">
                             <span class="col-3 input-group-text border-0" style="white-space: pre-wrap;">Skills</span>
                             <select id="skills-input" class="form-control col" multiple="multiple"></select>
                         </div>
@@ -57,12 +71,15 @@
     </div>
 </section>
 <script>
-    const cineSkillsets = {{ skills|safe }}
-    const cities = {{ cities|safe }}
-    var firstname = '{{ user.firstname }}'
-    var lastname = '{{ user.lastname }}'
-    var userLocation = '{{ location }}'
-    var userSkills = {{ userskills|safe }}
+    const cineSkillsets = {{ skills|safe }};
+    // const cineServices = {{ services|safe }};
+    const cities = {{ cities|safe }};
+    var firstname = '{{ user.firstname }}';
+    var lastname = '{{ user.lastname }}';
+    var userLocation = '{{ location }}';
+    var userSkills = {{ userskills|safe }};
+    var accountType = '{{ accounttype }}';
+    // var userServices = {{ userservices|safe }};
 </script>
 <script type="text/javascript" src="{% static 'js/load-image.all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.Jcrop.js' %}"></script>
