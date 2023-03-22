@@ -138,7 +138,7 @@ function cropModal(event, mode){
 
 cropNode.on('click', function (event) {
   // event.preventDefault();
-  var file = inputImage.prop('files')[0];
+  clearYT();
   var img = resultNode.find('img, canvas')[0];
   var pixelRatio = 1;
   var cropData;
@@ -169,6 +169,7 @@ $('#post-btn').on('click', function(){
     const csrftoken = getCookie('csrftoken');
     formData.append('csrfmiddlewaretoken', csrftoken);
     formData.append('content', $('#post-content').val());
+    formData.append('yt-id', $('#yt-prev').attr('data-yt-id'));
     $.ajax({
       url: '/upload_post/',
       method: 'POST',
@@ -191,5 +192,24 @@ $('#post-btn').on('click', function(){
 function getYTVideo(url){
   var u = new URL(url);
   var vId = new URLSearchParams(u.search).get('v');
-  console.log(vId);
+  return vId;
+}
+
+$('#add-yt-btn').on('click', function(){
+  let ytLink  =  $('#yt-input').val();
+  let vId = getYTVideo(ytLink);
+  embedVideo(vId);
+});
+
+function embedVideo(id){
+  let link = 'https://www.youtube.com/embed/';
+  $('#yt-prev').attr('src', link + id);
+  $('#yt-prev').attr('data-yt-id', id);
+  $('#yt-prev').show();
+}
+
+function clearYT(){
+  $('#yt-prev').attr('src', '');
+  $('#yt-prev').attr('data-yt-id', '');
+  $('#yt-prev').hide();
 }

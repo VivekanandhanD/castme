@@ -108,17 +108,22 @@ def upload_post(request):
         postid = str(uuid.uuid4())
         user_id = str(request.user.id)
         content = {}
-        image = request.FILES['image']
-        if image:
-            filename = 'posts/' + user_id + '/' + postid + '.jpg'
-            s3_client.upload_fileobj(image, settings.AWS_STORAGE_BUCKET_NAME, filename)
-            # image_url = get_signed_url(filename)
-        # content['content'] = request.POST['content']
-        # content['img'] = image_url if image else ''
+        image = None
+        try:
+            image = request.FILES['image']
+            if image:
+                filename = 'posts/' + user_id + '/' + postid + '.jpg'
+                s3_client.upload_fileobj(image, settings.AWS_STORAGE_BUCKET_NAME, filename)
+                # image_url = get_signed_url(filename)
+            # content['content'] = request.POST['content']
+            # content['img'] = image_url if image else ''
+        except:
+            pass
         content = {
             'doc': {
                 'userid': user_id,
                 'content': request.POST['content'],
+                'yt-id': request.POST['yt-id'],
                 'img': filename if image else '',
                 'time': str(timezone.now()),
                 'ad': request.POST.get('ad_bool', False),

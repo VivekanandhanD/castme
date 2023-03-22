@@ -22,13 +22,21 @@
                                 API.
                             </figcaption>
                         </figure>
-                        <label class="form-label bg-light" for="p-input" 
-                                style="cursor: pointer;">
-                                <i class="far fa-image fa-3x text-primary"></i>
-                        </label>
-                        <input type="file" class="form-control d-none" id="p-input" accept="image/*" />
-                        <div class="text-end" style="bottom: 39px;position: absolute;right: 24px;">
-                            <button class="btn btn-info" id="post-btn">Post</button>
+                        <iframe class="col" id="yt-prev" data-yt-id="" src="" title="YouTube video player" frameborder="0" allow="" style="display:none;width: inherit;"></iframe>
+                        <div class="col">
+                            <label class="form-label bg-light" for="p-input" 
+                                    style="cursor: pointer;">
+                                    <i class="far fa-image fa-3x text-primary"></i>
+                            </label>
+                            <input type="file" class="form-control d-none" id="p-input" accept="image/*" />
+
+                            <!-- <button class="bt ms-3" style=""> -->
+                                <i id="yt-btn" class="fab fa-youtube fa-3x text-danger ms-3" style="cursor:pointer;" data-mdb-toggle="modal" data-mdb-target="#yt-attach"></i>
+                            <!-- </button> -->
+
+                            <div class="text-end" style="bottom: 39px;position: absolute;right: 24px;">
+                                <button class="btn btn-info" id="post-btn">Post</button>
+                            </div>
                         </div>
                     </div>
                 </div>

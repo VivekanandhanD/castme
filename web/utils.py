@@ -16,6 +16,8 @@ s3_client = boto3.client(
 )
 
 def get_signed_url(object_key):
+    if not len(object_key):
+        return ''
     url = s3_client.generate_presigned_url(
         ClientMethod='get_object',
         Params={
@@ -61,6 +63,7 @@ def get_post_details(postid):
     resp = es_client.get(index="posts", id=postid)
     cxt['userid'] = resp['_source']['userid']
     cxt['content'] = resp['_source']['content']
+    cxt['ytid'] = resp['_source']['yt-id']
     cxt['img'] = get_signed_url(resp['_source']['img'])
     cxt['time'] = resp['_source']['time']
     cxt['likes'] = resp['_source']['likes']
