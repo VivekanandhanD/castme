@@ -47,8 +47,47 @@ def newpost(request):
 
 
 def post_view(request, postid):
-    cxt = get_post_details(postid)
-    return render(request, 'post.html', context=cxt)
+    ctx = get_post_details(postid)
+    return render(request, 'post.html', context=ctx)
+
+
+def posts(request):
+    ctx = []
+    q = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match": {
+                            "userid.keyword": "39c9474d-bc9f-42c5-9649-9edde5bba8ab"
+                            }
+                        },
+                        {
+                            "match": {
+                            "ad": False
+                            }
+                        },
+                        {
+                            "match": {
+                            "job": False
+                            }
+                        }
+                    ]
+                }
+            },
+            "size": 10,
+            "sort": [
+                {
+                    "time": {
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
+    resp = es_client.search(index="posts", body=q)
+    resp = resp['hits']['hits']
+    print(resp)
+    return JsonResponse({'list': resp})
 
 
 @login_required
@@ -57,26 +96,26 @@ def profile(request, userid=None):
     if not userid:
         userid = str(request.user.id)
         return redirect(reverse('profile') + '/' + userid)
-    cxt = {}
+    ctx = {}
     current_userid = str(request.user.id)
     key = 'users/' + userid + '/dp/dp.jpg'
-    cxt['dp_url'] = get_signed_url(key)
+    ctx['dp_url'] = get_signed_url(key)
     key = 'users/' + userid + '/dp/cp.jpg'
-    cxt['cp_url'] = get_signed_url(key)
+    ctx['cp_url'] = get_signed_url(key)
     if userid == current_userid:
-        cxt['edit'] = 1
+        ctx['edit'] = 1
     else:
-        cxt['edit'] = 0
-    cxt['profileuser'] = Users.objects.get(pk=userid)
+        ctx['edit'] = 0
+    ctx['profileuser'] = Users.objects.get(pk=userid)
     resp = es_client.get(index="user", id=request.user.id)
-    cxt['location'] = resp['_source']['location']
-    cxt['userskills'] = resp['_source']['skills']
+    ctx['location'] = resp['_source']['location']
+    ctx['userskills'] = resp['_source']['skills']
     q = ['follow-count', 'following-count', 'post-count']
     resp = es_client.get(index="user-activity", id=request.user.id, _source_includes=q)
-    cxt['followcount'] = resp['_source']['follow-count']
-    cxt['followingcount'] = resp['_source']['following-count']
-    cxt['postcount'] = resp['_source']['post-count']
-    return render(request, 'profile.html', context=cxt)
+    ctx['followcount'] = resp['_source']['follow-count']
+    ctx['followingcount'] = resp['_source']['following-count']
+    ctx['postcount'] = resp['_source']['post-count']
+    return render(request, 'profile.html', context=ctx)
 
 
 @login_required
@@ -125,7 +164,7 @@ def upload_post(request):
                 'content': request.POST['content'],
                 'yt-id': request.POST['yt-id'],
                 'img': filename if image else '',
-                'time': str(timezone.now()),
+                'time': timezone.now(),
                 'ad': request.POST.get('ad_bool', False),
                 'job': request.POST.get('job_bool', False),
                 'likes': [],
@@ -156,10 +195,10 @@ def create_account_details(userid):
 
 @login_required
 def profile_settings(request):
-    cxt = {}
-    cxt['skills'] = cine_skills + music_skills
-    # cxt['tamil_nadu_cities'] = tamil_nadu_cities
-    cxt['cities'] = all_cities
+    ctx = {}
+    ctx['skills'] = cine_skills + music_skills
+    # ctx['tamil_nadu_cities'] = tamil_nadu_cities
+    ctx['cities'] = all_cities
     if request.method == 'POST':
         data = json.loads(request.body)
         user = Users.objects.get(pk=request.user.id)
@@ -185,16 +224,20 @@ def profile_settings(request):
             print(e)
     try:
         resp = es_client.get(index="user", id=request.user.id)
-        cxt['location'] = resp['_source']['location']
-        cxt['userskills'] = resp['_source']['skills']
-        cxt['accounttype'] = resp['_source']['accounttype']
-        # cxt['userservices'] = resp['_source']['userservices']
+        ctx['location'] = resp['_source']['location']
+        ctx['userskills'] = resp['_source']['skills']
+        ctx['accounttype'] = resp['_source']['accounttype']
+        # ctx['userservices'] = resp['_source']['userservices']
     except Exception as e:
-        cxt['location'] = ''
-        cxt['userskills'] = []
-        cxt['accounttype'] = 'Individual'
-        # cxt['userservices'] = []
-    return render(request, 'profile-settings.html', context=cxt)
+        ctx['location'] = ''
+        ctx['userskills'] = []
+        ctx['accounttype'] = 'Individual'
+        # ctx['userservices'] = []
+    return render(request, 'profile-settings.html', context=ctx)
+
+
+def signed_img(request, type, profile_id, key):
+    return redirect(get_signed_url(type + '/' + profile_id + '/' + key))
 
 
 class CustomLoginView(LoginView):
