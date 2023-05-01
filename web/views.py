@@ -84,9 +84,13 @@ def posts(request):
                 }
             ]
         }
-    resp = es_client.search(index="posts", body=q)
-    resp = resp['hits']['hits']
-    print(resp)
+    try:
+        resp = es_client.search(index="posts", body=q)
+        resp = resp['hits']['hits']
+        print(resp)
+    except Exception as e:
+        print(e)
+        resp = []
     return JsonResponse({'list': resp})
 
 
@@ -172,6 +176,10 @@ def upload_post(request):
             }
         }
         es_client.index(index="posts", id=postid, body=content['doc'])
+        try:
+            increase_post_count(user_id, postid)
+        except Exception as e:
+            print(e)
         return JsonResponse({'msg': 'success', 'id': postid})
     return JsonResponse({'error': 'Invalid request'})
 
@@ -185,12 +193,46 @@ def create_account_details(userid):
     data = {
         "follow-count": 0,
         "following-count": 0,
+        "post-count": 0,
         "followers": [],
         "following": [],
         "posts": [],
         "blacklist": []
     }
     es_client.index(index="user-activity", id=userid, body=data)
+
+
+def increase_post_count(userid, postid):
+    update_query = {
+        "script": {
+            "source": "ctx._source['post-count'] += params.count_increment; ctx._source.posts.add(params.new_string_value);",
+            "params": {
+                "count_increment": 1,
+                "new_string_value": postid
+            },
+            "lang": "painless"
+        }
+    }
+    es_client.update(index='user-activity', id=userid, body=update_query)
+    # update_query = {
+    #     "script": {
+    #         "source": "ctx._source.post-count += params.value",
+    #         "params": {
+    #             "value": 1
+    #         }
+    #     }
+    # }
+    # es_client.update(index="user-activity", id=userid, body=update_query)
+    # update_body = {
+    #     'script': {
+    #         'source': 'ctx._source.posts.add(params.my_value)',
+    #         'lang': 'painless',
+    #         'params': {
+    #             'my_value': postid
+    #         }
+    #     }
+    # }
+    # es_client.update(index="user-activity", id=userid, body=update_body)
 
 
 @login_required

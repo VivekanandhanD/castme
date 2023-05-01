@@ -136,7 +136,7 @@ function cropModal(event, mode){
   },500);
 }
 
-cropNode.on('click', function (event) {
+cropNode.on('click', function (event) {       //Button
   // event.preventDefault();
   clearYT();
   var img = resultNode.find('img, canvas')[0];
@@ -147,8 +147,8 @@ cropNode.on('click', function (event) {
     loadImage.scale(img, {
       left: coordinates.x * pixelRatio,
       top: coordinates.y * pixelRatio,
-      // sourceWidth: coordinates.w * pixelRatio,
-      // sourceHeight: coordinates.h * pixelRatio,
+      sourceWidth: coordinates.w * pixelRatio,
+      sourceHeight: coordinates.h * pixelRatio,
       maxWidth: currentNode.width() * pixelRatio,
       contain: true,
     })
@@ -178,6 +178,9 @@ $('#post-btn').on('click', function(){
       processData: false,
       success: function(response) {
         console.log(response);
+        if (response.msg == 'success'){
+          location.href = '/';
+        }
         if (response.error) {
           alert(response.error);
         }
