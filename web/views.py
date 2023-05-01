@@ -59,7 +59,7 @@ def posts(request):
                     "must": [
                         {
                             "match": {
-                            "userid.keyword": "39c9474d-bc9f-42c5-9649-9edde5bba8ab"
+                            "userid.keyword": str(request.user.id)
                             }
                         },
                         {
