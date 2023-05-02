@@ -59,7 +59,7 @@ def posts(request):
                     "must": [
                         {
                             "match": {
-                            "userid.keyword": str(request.user.id)
+                            "userid.keyword": request.GET['profileId']
                             }
                         },
                         {

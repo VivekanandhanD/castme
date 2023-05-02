@@ -211,9 +211,7 @@ $(document).ready(function(){
   $.ajax({
     url: '/posts',
     method: 'GET',
-    // data: formData,
-    contentType: false,
-    processData: false,
+    data: {'profileId': location.pathname.split('/').at(-1)},
     success: function(response) {
       console.log(response);
       if (response.error) {
