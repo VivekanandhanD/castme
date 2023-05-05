@@ -10,6 +10,7 @@ urlpatterns = [
     path('posts', views.posts, name='posts'),
     path('newpost', views.newpost, name='new-post'),
     path('post', views.newpost, name='new-post'),
+    path('follow', views.follow_user, name='follow-user'),
     path('post/<str:postid>', views.post_view, name='post-view'),
     path('profile', views.profile, name='profile'),
     path('profile/', views.profile, name='profile_slash'),

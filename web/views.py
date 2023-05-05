@@ -87,7 +87,6 @@ def posts(request):
     try:
         resp = es_client.search(index="posts", body=q)
         resp = resp['hits']['hits']
-        print(resp)
     except Exception as e:
         print(e)
         resp = []
@@ -111,14 +110,15 @@ def profile(request, userid=None):
     else:
         ctx['edit'] = 0
     ctx['profileuser'] = Users.objects.get(pk=userid)
-    resp = es_client.get(index="user", id=request.user.id)
+    resp = es_client.get(index="user", id=userid)
     ctx['location'] = resp['_source']['location']
     ctx['userskills'] = resp['_source']['skills']
     q = ['follow-count', 'following-count', 'post-count']
-    resp = es_client.get(index="user-activity", id=request.user.id, _source_includes=q)
+    resp = es_client.get(index="user-activity", id=userid, _source_includes=q)
     ctx['followcount'] = resp['_source']['follow-count']
     ctx['followingcount'] = resp['_source']['following-count']
     ctx['postcount'] = resp['_source']['post-count']
+    ctx['following'] = check_following(current_userid, userid)
     return render(request, 'profile.html', context=ctx)
 
 
@@ -182,6 +182,53 @@ def upload_post(request):
             print(e)
         return JsonResponse({'msg': 'success', 'id': postid})
     return JsonResponse({'error': 'Invalid request'})
+
+
+@login_required
+@user_passes_test(onboarded, login_url='profile-settings')
+def follow_user(request):
+    try:
+        if request.method == 'POST':
+            userid = str(request.user.id)
+            profile_id = request.POST['profileId']
+            update_query = {
+                "script": {
+                    # "source": "ctx._source.following.add(params.profile_id);",
+                    "source": """
+                        if (!ctx._source.following.contains(params.profile_id)) {
+                            ctx._source.following.add(params.profile_id);
+                        } else {
+                            ctx._source.following.remove(params.profile_id);
+                        }
+                    """,
+                    "params": {
+                        "profile_id": profile_id
+                    },
+                    "lang": "painless"
+                }
+            }
+            es_client.update(index='user-activity', id=userid, body=update_query)
+            update_query = {
+                "script": {
+                    # "source": "ctx._source.followers.add(params.profile_id);",
+                    "source": """
+                        if (!ctx._source.followers.contains(params.profile_id)) {
+                            ctx._source.followers.add(params.profile_id);
+                        } else {
+                            ctx._source.followers.remove(params.profile_id);
+                        }
+                    """,
+                    "params": {
+                        "profile_id": userid
+                    },
+                    "lang": "painless"
+                }
+            }
+            es_client.update(index='user-activity', id=profile_id, body=update_query)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'error': 'Internal Server Error'})
+    return JsonResponse({'msg': 'Success'})
 
 
 @login_required

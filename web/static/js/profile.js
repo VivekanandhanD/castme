@@ -1,8 +1,14 @@
-var inputImage = $('#dp-input');
-var resultNode = $('#crop-figure');
-var cropNode = $('#save-crop');
-var imageMode = 'dp';
+let inputImage = $('#dp-input');
+let resultNode = $('#crop-figure');
+let cropNode = $('#save-crop');
+let imageMode = 'dp';
+let fBtnContent = '<i class="fas fa-plus"></i> Follow';
+let fbStyle = '#14a44dd4';
+let ufbStyle = '#880e4fd1';
+let ufBtnContent = 'Following';
 $('.edit-btn').hide();
+// $('.follow-btn').hide();
+
 const loadImageOptions = {
     maxWidth: 500,
     maxHeight: 500,
@@ -211,7 +217,7 @@ $(document).ready(function(){
   $.ajax({
     url: '/posts',
     method: 'GET',
-    data: {'profileId': location.pathname.split('/').at(-1)},
+    data: {'profileId': profileId},
     success: function(response) {
       console.log(response);
       if (response.error) {
@@ -223,5 +229,40 @@ $(document).ready(function(){
     error: function(xhr, status, error) {
       alert('Internal error please try again after sometime.');
     }
+  });
+  if(following){
+    $('.follow-btn').css('background', ufbStyle);
+    $('.follow-btn').html(ufBtnContent);
+  } else{
+    $('.follow-btn').css('background', fbStyle);
+    $('.follow-btn').html(fBtnContent);
+  }
+  $('.follow-btn').on('click', function(){
+    if(following){
+      $('.follow-btn').css('background', fbStyle);
+      $('.follow-btn').html(fBtnContent);
+    } else{
+      $('.follow-btn').css('background', ufbStyle);
+      $('.follow-btn').html(ufBtnContent);
+    }
+    following = !following;
+    $.ajax({
+      url: '/follow',
+      method: 'POST',
+      data: {'profileId': profileId},
+      headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+      },
+      success: function(response) {
+        console.log(response);
+        if (response.error) {
+          alert(response.error);
+          return;
+        }
+      },
+      error: function(xhr, status, error) {
+        alert('Internal error please try again after sometime.');
+      }
+    });
   });
 });
