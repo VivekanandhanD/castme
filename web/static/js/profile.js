@@ -188,7 +188,7 @@ cropNode.on('click', function (event) {
   }, 100);
 });
 
-try {if (editProfile) $('.edit-btn').show();} catch (error) {}
+try {if (editProfile) {$('.edit-btn').show(); $('.follow-btn').remove();}} catch (error) {}
 
 function postThumbs(list){
   var colCount = 1;

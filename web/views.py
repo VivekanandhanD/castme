@@ -102,9 +102,9 @@ def profile(request, userid=None):
     ctx = {}
     current_userid = str(request.user.id)
     key = 'users/' + userid + '/dp/dp.jpg'
-    ctx['dp_url'] = get_signed_url(key)
+    ctx['p_dp_url'] = get_signed_url(key)
     key = 'users/' + userid + '/dp/cp.jpg'
-    ctx['cp_url'] = get_signed_url(key)
+    ctx['p_cp_url'] = get_signed_url(key)
     if userid == current_userid:
         ctx['edit'] = 1
     else:
@@ -197,11 +197,23 @@ def follow_user(request):
                     "source": """
                         if (!ctx._source.following.contains(params.profile_id)) {
                             ctx._source.following.add(params.profile_id);
+                            ctx._source['following-count'] += params.count_increment;
                         } else {
-                            ctx._source.following.remove(params.profile_id);
+                            def string_to_find = params.profile_id;
+                            def index = -1;
+                            def list_field = ctx._source.following;
+                            for (int i = 0; i < list_field.size(); i++) {
+                                if (list_field[i] == string_to_find) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            ctx._source.following.remove(index);
+                            ctx._source['following-count'] -= params.count_increment;
                         }
                     """,
                     "params": {
+                        "count_increment": 1,
                         "profile_id": profile_id
                     },
                     "lang": "painless"
@@ -214,11 +226,23 @@ def follow_user(request):
                     "source": """
                         if (!ctx._source.followers.contains(params.profile_id)) {
                             ctx._source.followers.add(params.profile_id);
+                            ctx._source['follow-count'] += params.count_increment;
                         } else {
-                            ctx._source.followers.remove(params.profile_id);
+                            def string_to_find = params.profile_id;
+                            def index = -1;
+                            def list_field = ctx._source.followers;
+                            for (int i = 0; i < list_field.size(); i++) {
+                                if (list_field[i] == string_to_find) {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            ctx._source.followers.remove(index);
+                            ctx._source['follow-count'] -= params.count_increment;
                         }
                     """,
                     "params": {
+                        "count_increment": 1,
                         "profile_id": userid
                     },
                     "lang": "painless"
