@@ -191,6 +191,8 @@ def follow_user(request):
         if request.method == 'POST':
             userid = str(request.user.id)
             profile_id = request.POST['profileId']
+            if userid == profile_id:
+                return JsonResponse({'error': 'Internal Server Error'})
             update_query = {
                 "script": {
                     # "source": "ctx._source.following.add(params.profile_id);",
