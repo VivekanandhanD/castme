@@ -194,8 +194,7 @@ function postThumbs(list){
   var colCount = 1;
   var template = '<div class="row g-2 mb-2">';
   list.forEach(p => {
-    console.log(p['_source']['img']);
-    var thumbDiv = '<div class="col"><img src="' + '/img/' + p['_source']['img'] + '" alt="post'+ colCount +'" class="w-100 rounded-3"></div>';
+    var thumbDiv = '<div class="col post-thumb" style="cursor: pointer;"><a href="/post/' + p['_id'] + '" target="blank"><img src="' + '/img/' + p['_source']['img'] + '" alt="post'+ colCount +'" class="w-100 rounded-3"></a></div>';
     template += thumbDiv;
     if(colCount % 3 == 0){
       template += '</div><div class="row g-2 mb-2">';// + template + '</div>';
