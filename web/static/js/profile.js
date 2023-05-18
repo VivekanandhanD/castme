@@ -194,17 +194,24 @@ function postThumbs(list){
   var colCount = 1;
   var template = '<div class="row g-2 mb-2">';
   list.forEach(p => {
-    var thumbDiv = '<div class="col post-thumb" style="cursor: pointer;"><a href="/post/' + p['_id'] + '" target="blank"><img src="' + '/img/' + p['_source']['img'] + '" alt="post'+ colCount +'" class="w-100 rounded-3"></a></div>';
+    var thumbDiv = '';
+    var imgSource = '';
+    if (p['_source']['img'].length)
+      imgSource = '/img/' + p['_source']['img'];
+    else if (p['_source']['yt-id'].length)
+      imgSource = 'http://img.youtube.com/vi/' + p['_source']['yt-id'] + '/0.jpg'
+    thumbDiv = '<div class="col post-thumb" style="cursor: pointer;"><a href="/post/' + p['_id'] + '" target="blank"><img src="' + imgSource + '" alt="post'+ colCount +'" class="w-100 rounded-3"></a></div>';
     template += thumbDiv;
-    if(colCount % 3 == 0){
+    if(colCount % 3 == 0 && colCount !=0 ){
       template += '</div><div class="row g-2 mb-2">';// + template + '</div>';
     }
     // template += thumbDiv;
     colCount++;
   });
+  colCount--;
   if(colCount % 3 !== 0){
     console.log(colCount%3);
-    for(let i = 0; i < colCount%3; i++){
+    for(let i = 0; i < 3 - colCount%3; i++){
       template += '<div class="col"></div>';
     }
   }
@@ -218,7 +225,7 @@ $(document).ready(function(){
     method: 'GET',
     data: {'profileId': profileId},
     success: function(response) {
-      console.log(response);
+      // console.log(response);
       if (response.error) {
         alert(response.error);
         return;

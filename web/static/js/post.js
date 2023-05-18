@@ -166,29 +166,36 @@ $('#post-btn').on('click', function(){
     }, 'image/png', 1);
   }
   setTimeout(function(){
-    const csrftoken = getCookie('csrftoken');
-    formData.append('csrfmiddlewaretoken', csrftoken);
-    formData.append('content', $('#post-content').val());
-    formData.append('yt-id', $('#yt-prev').attr('data-yt-id'));
-    $.ajax({
-      url: '/upload_post/',
-      method: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function(response) {
-        console.log(response);
-        if (response.msg == 'success'){
-          location.href = '/';
+    var ytId = $('#yt-prev').attr('data-yt-id');
+    console.log(ytId.length);
+    console.log(formData.get('image')?true:false);
+    if (ytId.length || formData.get('image')){
+      const csrftoken = getCookie('csrftoken');
+      formData.append('csrfmiddlewaretoken', csrftoken);
+      formData.append('content', $('#post-content').val());
+      formData.append('yt-id', ytId);
+      $.ajax({
+        url: '/upload_post/',
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          console.log(response);
+          if (response.msg == 'success'){
+            location.href = '/';
+          }
+          if (response.error) {
+            alert(response.error);
+          }
+        },
+        error: function(xhr, status, error) {
+          alert('Failed to upload the image');
         }
-        if (response.error) {
-          alert(response.error);
-        }
-      },
-      error: function(xhr, status, error) {
-        alert('Failed to upload the image');
-      }
-    });
+      });
+    } else{
+      alert('Please add a photo to upload');
+    }
   }, 1000);
 });
 
