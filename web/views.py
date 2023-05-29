@@ -186,6 +186,15 @@ def upload_post(request):
 
 @login_required
 @user_passes_test(onboarded, login_url='profile-settings')
+def pinpost(request):
+    if request.method == 'POST':
+        postid = request.POST['postId']
+        print(postid)
+        return JsonResponse({'msg': 'success', 'id': postid})
+    return JsonResponse({'error': 'Invalid request'})
+
+@login_required
+@user_passes_test(onboarded, login_url='profile-settings')
 def follow_user(request):
     try:
         if request.method == 'POST':

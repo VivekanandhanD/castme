@@ -20,3 +20,32 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+$(function() {
+  $.contextMenu({
+      selector: '.post-thumb',
+      trigger: 'left',
+      callback: function(key, options, i, j) {
+          var m = "clicked: " + key;
+          console.log(m);
+          console.log(options.$trigger[0].id);
+          console.log(i);
+          if (key === 'pin'){
+            pinPost(options.$trigger[0].id);
+          }
+      },
+      items: {
+          "pin": {name: "Pin Post", icon: function(i,j,k,l){
+            j.html('<i class="fas fa-thumbtack"></i> Pin Post');
+            return 'context-menu-icon-updated';
+          }}
+      }
+  });
+
+  $('.post-thumb').on('contextmenu', function(e){
+      e.preventDefault();
+      console.log('clicked', this);
+  })
+  $(document).bind("contextmenu",function(e){
+    return false;
+  });
+});

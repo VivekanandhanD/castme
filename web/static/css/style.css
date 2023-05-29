@@ -45,6 +45,21 @@ body {
 footer a{
     color: unset;
 }
+.post-thumb{
+  cursor: pointer;
+  align-self:center;
+  overflow-x:hidden;
+  display:grid;
+  justify-items: end;
+}
+.opt{
+  /* background-color: #00000075; */
+  color: white;
+  position: absolute;
+  text-shadow: 0 0 black;
+  margin-top: 1%;
+  padding: 10px;
+}
 /*
 .pending{
     color: grey;
