@@ -22,7 +22,7 @@ function getCookie(name) {
 }
 $(function() {
   $.contextMenu({
-      selector: '.post-thumb',
+      selector: '.opt',
       trigger: 'left',
       callback: function(key, options, i, j) {
           var m = "clicked: " + key;
@@ -35,11 +35,17 @@ $(function() {
       },
       items: {
           "pin": {name: "Pin Post", icon: function(i,j,k,l){
+              if(editProfile)
+                j.html('<i class="fas fa-thumbtack"></i> Pin/Unpin Post');
+              else
+                j.remove();
+            }},
+          "delete": {name: "Delete Post", icon: function(i,j,k,l){
             if(editProfile)
-              j.html('<i class="fas fa-thumbtack"></i> Pin Post');
+              j.html('<i class="fas fa-cross"></i> Delete Post');
             else
               j.remove();
-          }}
+          }},
       }
   });
 

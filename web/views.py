@@ -71,6 +71,47 @@ def posts(request):
                             "match": {
                             "job": False
                             }
+                        },
+                        {
+                            "match": {
+                            "pinned": True
+                            }
+                        }
+                    ]
+                }
+            },
+            "size": 6,
+            # "sort": [
+            #     {
+            #         "time": {
+            #             "order": "desc"
+            #         }
+            #     }
+            # ]
+        }
+    q2 = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match": {
+                            "userid.keyword": request.GET['profileId']
+                            }
+                        },
+                        {
+                            "match": {
+                            "ad": False
+                            }
+                        },
+                        {
+                            "match": {
+                            "job": False
+                            }
+                        },
+                        {
+                            "match": {
+                            "pinned": False
+                            }
                         }
                     ]
                 }
@@ -87,6 +128,8 @@ def posts(request):
     try:
         resp = es_client.search(index="posts", body=q)
         resp = resp['hits']['hits']
+        resp2 = es_client.search(index="posts", body=q2)
+        resp += resp2['hits']['hits']
     except Exception as e:
         print(e)
         resp = []
@@ -172,7 +215,8 @@ def upload_post(request):
                 'ad': request.POST.get('ad_bool', False),
                 'job': request.POST.get('job_bool', False),
                 'likes': [],
-                'comments': []
+                'comments': [],
+                'pinned': False
             }
         }
         es_client.index(index="posts", id=postid, body=content['doc'])
@@ -189,18 +233,47 @@ def upload_post(request):
 def pinpost(request):
     if request.method == 'POST':
         postid = request.POST['postId']
-        print(postid)
         update_query = {
             "script": {
-                "source": "ctx._source['post-count'] += params.count_increment; ctx._source.posts.add(params.new_string_value);",
+                "source": """
+                    def pinned = ctx._source.pinned_posts;
+                    def index = -1;
+                    if (!pinned.contains(params.post_id)) {
+                        if(pinned.size() == 6){
+                            pinned.remove(0);
+                            ctx._source.pinned_posts.remove(0);
+                        }
+                        pinned.add(params.post_id);
+                        ctx._source.pinned_posts = pinned;
+                    } else{
+                        for (int i = 0; i < pinned.size(); i++) {
+                            if (pinned[i] == params.post_id) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        ctx._source.pinned_posts.remove(index);
+                    }
+                """,
                 "params": {
-                    "count_increment": 1,
-                    "new_string_value": postid
+                    "post_id": postid
                 },
                 "lang": "painless"
             }
         }
-        es_client.update(index='user-activity', id=request.user.id, body=update_query)
+        res = es_client.update(index='user-activity', id=request.user.id, body=update_query)
+        update_query = {
+            "script": {
+                "source": """
+                    ctx._source.pinned = !ctx._source.pinned;
+                """,
+                "params": {
+                    "post_id": postid
+                },
+                "lang": "painless"
+            }
+        }
+        es_client.update(index='posts', id=postid, body=update_query)
         return JsonResponse({'msg': 'success', 'id': postid})
     return JsonResponse({'error': 'Invalid request'})
 

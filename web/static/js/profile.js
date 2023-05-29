@@ -204,7 +204,7 @@ function postThumbs(list){
       imgWidth = '133%';
     }
     // thumbDiv = '<div class="col post-thumb" style="cursor: pointer;background-image: url(\'' + imgSource + '\'); background-position: center; background-size: cover; background-repeat: no-repeat; height:200px;" onclick="window.open(\'/post/' + p['_id'] + '\', \'_blank\');"></div>';
-    thumbDiv = '<div id="' + p['_id'] + '" class="col post-thumb rounded-3" style=""><div class="opt"><i class="fas fa-ellipsis-v card-text"></i></div><img src="' + imgSource + '" alt="post'+ colCount +'" onclick="window.open(\'/post/' + p['_id'] + '\', \'_blank\');" class="rounded-3 card-img" style="width:' + imgWidth + ';"></div>';
+    thumbDiv = '<div class="col post-thumb rounded-3" style=""><div class="opt" id="' + p['_id'] + '"><i class="fas fa-ellipsis-v card-text"></i></div><img src="' + imgSource + '" alt="post'+ colCount +'" onclick="window.open(\'/post/' + p['_id'] + '\', \'_blank\');" class="rounded-3 card-img" style="width:' + imgWidth + ';"></div>';
     template += thumbDiv;
     if(colCount % 3 == 0 && colCount !=0 ){
       template += '</div><div class="row g-2 mb-2">';// + template + '</div>';
@@ -237,7 +237,9 @@ function pinPost(id){
         alert(response.error);
         return;
       }
-      location.reload();
+      setTimeout(function(){
+        location.reload();
+      },1000);
     },
     error: function(xhr, status, error) {
       alert('Internal error please try again after sometime.');
