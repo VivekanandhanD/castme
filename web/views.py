@@ -190,6 +190,17 @@ def pinpost(request):
     if request.method == 'POST':
         postid = request.POST['postId']
         print(postid)
+        update_query = {
+            "script": {
+                "source": "ctx._source['post-count'] += params.count_increment; ctx._source.posts.add(params.new_string_value);",
+                "params": {
+                    "count_increment": 1,
+                    "new_string_value": postid
+                },
+                "lang": "painless"
+            }
+        }
+        es_client.update(index='user-activity', id=request.user.id, body=update_query)
         return JsonResponse({'msg': 'success', 'id': postid})
     return JsonResponse({'error': 'Invalid request'})
 
@@ -279,7 +290,8 @@ def create_account_details(userid):
         "followers": [],
         "following": [],
         "posts": [],
-        "blacklist": []
+        "blacklist": [],
+        "pinned_posts": []
     }
     es_client.index(index="user-activity", id=userid, body=data)
 

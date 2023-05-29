@@ -35,8 +35,10 @@ $(function() {
       },
       items: {
           "pin": {name: "Pin Post", icon: function(i,j,k,l){
-            j.html('<i class="fas fa-thumbtack"></i> Pin Post');
-            return 'context-menu-icon-updated';
+            if(editProfile)
+              j.html('<i class="fas fa-thumbtack"></i> Pin Post');
+            else
+              j.remove();
           }}
       }
   });
