@@ -343,39 +343,6 @@ $(function() {
           }
         }
       },
-      // callback: function(key, options, i, j) {
-      //     var m = "clicked: " + key;
-      //     console.log(m);
-      //     console.log($(options.$trigger[0]).attr('pinned'));
-      //     console.log(i);
-      //     if (key === 'pin'){
-      //       pinPost(options.$trigger[0].id);
-      //     }
-      // },
-      // items: {
-      //     "pin": {
-      //       name: "Pin Post", 
-      //       icon: function(i,j,k,l){
-      //         console.log(i);
-      //         console.log(j);
-      //         console.log(k);
-      //         console.log(l);
-      //         if(editProfile)
-      //           j.html('<i class="fas fa-thumbtack"></i> Pin/Unpin Post');
-      //         else
-      //           j.remove();
-      //       },
-      //       callback: function(i, j, k, l){
-
-      //       }
-      //     },
-      //     "delete": {name: "Delete Post", icon: function(i,j,k,l){
-      //       if(editProfile)
-      //         j.html('<i class="fas fa-cross"></i> Delete Post');
-      //       else
-      //         j.remove();
-      //     }},
-      // }
   });
 
   $('.post-thumb').on('contextmenu', function(e){
