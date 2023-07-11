@@ -194,6 +194,7 @@ function postThumbs(list){
   var colCount = 1;
   var template = '<div class="row g-2 mb-2">';
   list.forEach(p => {
+    console.log(p['_id'], p['_source']['pinned']);
     var thumbDiv = '';
     var imgSource = '';
     if (p['_source']['img'].length){
@@ -204,7 +205,7 @@ function postThumbs(list){
       imgWidth = '133%';
     }
     // thumbDiv = '<div class="col post-thumb" style="cursor: pointer;background-image: url(\'' + imgSource + '\'); background-position: center; background-size: cover; background-repeat: no-repeat; height:200px;" onclick="window.open(\'/post/' + p['_id'] + '\', \'_blank\');"></div>';
-    thumbDiv = '<div class="col post-thumb rounded-3" style=""><div class="opt" id="' + p['_id'] + '"><i class="fas fa-ellipsis-v card-text"></i></div><img src="' + imgSource + '" alt="post'+ colCount +'" onclick="window.open(\'/post/' + p['_id'] + '\', \'_blank\');" class="rounded-3 card-img" style="width:' + imgWidth + ';"></div>';
+    thumbDiv = '<div class="col post-thumb rounded-3" style=""><div class="opt" id="' + p['_id'] + '" pinned="' + p['_source']['pinned'] + '"><i class="fas fa-ellipsis-v card-text"></i></div><img src="' + imgSource + '" alt="post'+ colCount +'" onclick="window.open(\'/post/' + p['_id'] + '\', \'_blank\');" class="rounded-3 card-img" style="width:' + imgWidth + ';"></div>';
     template += thumbDiv;
     if(colCount % 3 == 0 && colCount !=0 ){
       template += '</div><div class="row g-2 mb-2">';// + template + '</div>';
@@ -298,5 +299,90 @@ $(document).ready(function(){
         alert('Internal error please try again after sometime.');
       }
     });
+  });
+});
+
+$(function() {
+  $.contextMenu({
+      selector: '.opt',
+      trigger: 'left',
+      build: function($trigger, e) {
+        return {
+          callback: function(key, options, i, j) {
+            var m = "clicked: " + key;
+            console.log(m);
+            console.log($(options.$trigger[0]).attr('pinned'));
+            console.log(i);
+            if (key === 'pin'){
+              pinPost(options.$trigger[0].id);
+            }
+          },
+          items: {
+            "pin": {
+              name: "Pin Post", 
+              icon: function(i,j,k,l){
+                try{
+                  var pinned = $(i[0]).attr('pinned');
+                  if(editProfile){
+                    if(pinned == 'true')
+                      j.html('<i class="fas fa-thumbtack"></i> Unpin Post');
+                    else if(pinned == 'false')
+                      j.html('<i class="fas fa-thumbtack"></i> Pin Post');
+                  } else{
+                    j.remove();
+                  }
+                } catch(e){}
+              }
+            },
+            "delete": {name: "Delete Post", icon: function(i,j,k,l){
+              if(editProfile)
+                j.html('<i class="fas fa-cross"></i> Delete Post');
+              else
+                j.remove();
+            }},
+          }
+        }
+      },
+      // callback: function(key, options, i, j) {
+      //     var m = "clicked: " + key;
+      //     console.log(m);
+      //     console.log($(options.$trigger[0]).attr('pinned'));
+      //     console.log(i);
+      //     if (key === 'pin'){
+      //       pinPost(options.$trigger[0].id);
+      //     }
+      // },
+      // items: {
+      //     "pin": {
+      //       name: "Pin Post", 
+      //       icon: function(i,j,k,l){
+      //         console.log(i);
+      //         console.log(j);
+      //         console.log(k);
+      //         console.log(l);
+      //         if(editProfile)
+      //           j.html('<i class="fas fa-thumbtack"></i> Pin/Unpin Post');
+      //         else
+      //           j.remove();
+      //       },
+      //       callback: function(i, j, k, l){
+
+      //       }
+      //     },
+      //     "delete": {name: "Delete Post", icon: function(i,j,k,l){
+      //       if(editProfile)
+      //         j.html('<i class="fas fa-cross"></i> Delete Post');
+      //       else
+      //         j.remove();
+      //     }},
+      // }
+  });
+
+  $('.post-thumb').on('contextmenu', function(e){
+      e.preventDefault();
+      console.log('clicked', this);
+  })
+  $(document).bind("contextmenu",function(e){
+    return false;
   });
 });
