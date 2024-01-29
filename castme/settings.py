@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x_ln-%imdjpvh-()tykz-=xz!(w9dxi^=vn0_42$y8ux5su2jv'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,8 +88,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'castme',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
     },
@@ -148,7 +148,7 @@ SOCIALACCOUNT_PROVIDERS = {
     'google': {
         "APP": {
             "client_id": "611846558825-ca1nb0gdj0l5ausqh6roh2t03a6vbu86.apps.googleusercontent.com",
-            "secret": "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",
+            "secret": "",
             "key": ""
         },
         'SCOPE': [
@@ -186,9 +186,9 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 
 ELASTIC_HOST = 'https://localhost:9200'
-ELASTIC_PASSWORD = '2SkiYaw+ptBcJq+O7u4S'
+ELASTIC_PASSWORD = ''
 
-AWS_ACCESS_KEY = 'AKIAWFXJKOTGZETXGC6I'
-AWS_SECRET_KEY = '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'
+AWS_ACCESS_KEY = ''
+AWS_SECRET_KEY = ''
 AWS_STORAGE_BUCKET_NAME = 'cast.me'
 S3_REGION = 'ap-south-2'
